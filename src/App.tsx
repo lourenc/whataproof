@@ -5,6 +5,7 @@ import { Account } from './components/Account'
 import { Balance } from './components/Balance'
 import { NetworkSwitcher } from './components/NetworkSwitcher'
 import { RequestsList } from './components/RequestsList'
+import { CreateItemLink } from './components/CreateItemLink'
 
 export function App() {
   const { isConnected } = useAccount()
@@ -31,6 +32,8 @@ export function App() {
           <hr />
           <h2>Requests</h2>
           <RequestsList />
+          <h2>Distribute</h2>
+          <CreateItemLink />
         </>
       )}
     </>
