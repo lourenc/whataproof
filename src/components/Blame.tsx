@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from 'axios';
-import 'nes.css/css/nes.min.css';
+import axios from "axios";
+import "nes.css/css/nes.min.css";
 
 export function Blame() {
   const [selectedFile, setSelectedFile] = useState<any>(null);
@@ -18,37 +18,39 @@ export function Blame() {
 
     formData.append("image", selectedFile, selectedFile.name);
 
-    axios.post("http://127.0.0.1:5000/check_image", formData)
-    .then(response => {
-      const key = response.data;
-      // \u0000\u0000\u0000\u0000 if no key found
-      const watermarkElement = document.getElementById("watermark") as HTMLElement;
-      watermarkElement.innerText = key;
-    })
-    .catch(error => {
-      // Handle errors here
-      console.error("Error:", error);
-    });
-
-    // axios.post("api/uploadfile", formData);
-    // TODO - call backend to upload file, get watermarked bytes, encrypt and load to filecoin
-    setLeaker("0x103FA68B461bdBDbc5456Fd3164f8A71fd25eb5f");
+    axios
+      .post("http://127.0.0.1:5000/check_image", formData)
+      .then((response) => {
+        const key = response.data;
+        // \u0000\u0000\u0000\u0000 if no key found
+        setLeaker(key);
+      })
+      .catch((error) => {
+        // Handle errors here
+        console.error("Error:", error);
+      });
   };
 
   return (
     <div>
       <label>Load a file to detect a leaker</label>
       <div>
-        <label htmlFor="fileInputBlame" className={`nes-btn ${selectedFile ? 'is-primary' : ''}`}>
+        <label
+          htmlFor="fileInputBlame"
+          className={`nes-btn ${selectedFile ? "is-primary" : ""}`}
+        >
           Select File
-          <input type="file" id="fileInputBlame" onChange={onFileChange}></input>
+          <input
+            type="file"
+            id="fileInputBlame"
+            onChange={onFileChange}
+          ></input>
         </label>
         <br />
-        <p>{ selectedFile? selectedFile.name: "No file chosen" }</p>
-        <button className="nes-btn" onClick={onFileUpload}>Detect leaker</button>
-      </div>
-      <div>
-        Watermark: <p id="watermark"></p>
+        <p>{selectedFile ? selectedFile.name : "No file chosen"}</p>
+        <button className="nes-btn" onClick={onFileUpload}>
+          Detect leaker
+        </button>
       </div>
       {leaker && (
         <>

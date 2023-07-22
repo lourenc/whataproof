@@ -6,6 +6,9 @@ import { api } from "../api/api";
 import { decryptFileWithEOAAccess, encryptFileWithEOAAccess } from "../lit-sdk";
 import { useAccount, useNetwork } from "wagmi";
 import { useEthersSigner } from "../hooks/useEthersSigner";
+import { watermarkApi } from "../api/watermark";
+
+import mimetypes from "mime-types";
 
 export function RequestsListItem(
   props: Request & { onApprove: () => void; onReject: () => void }
@@ -67,12 +70,27 @@ export function RequestsList() {
       throw new Error("Failed to decrypt file from web3storage/LIT");
     }
 
+    const formData = new FormData();
+    const fileExtension = mimetypes.extension(decryptedOriginalFile.type);
+
+    formData.append(
+      "image",
+      decryptedOriginalFile,
+      fileExtension ? `encrypted.${fileExtension}` : "unknown.png"
+    );
+    formData.append("key", request.initiator.toLowerCase());
+
+    const watermarkedImageResponse = await watermarkApi.addWatermark(formData);
+    const watermarkedImageBlob = new Blob([watermarkedImageResponse.data], {
+      type: watermarkedImageResponse.headers["content-type"],
+    });
+
     const encryptedFileCidWithACL = await encryptFileWithEOAAccess(
       chain.id,
       signer.provider as any,
       address.toLowerCase(),
       request.initiator.toLowerCase(),
-      decryptedOriginalFile
+      watermarkedImageBlob
     );
 
     if (!encryptedFileCidWithACL) {
