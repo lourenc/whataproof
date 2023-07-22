@@ -10,5 +10,5 @@ export interface Request {
   distributor: string;
   status: RequestStatus;
   itemId: string;
+  meta?: string;
 }
-

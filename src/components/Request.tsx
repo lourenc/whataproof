@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { RequestStatus, Request as RequestModel } from "../models/Request";
 import { api } from "../api/api";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { Item } from "../models/Item";
+import { decryptFileWithEOAAccess } from "../lit-sdk";
+import { useEthersSigner } from "../hooks/useEthersSigner";
 
 function RejectedRequest() {
   return (
@@ -23,6 +25,31 @@ function PendingRequest({ request }: { request: RequestModel }) {
 }
 
 function ApprovedRequest({ request }: { request: RequestModel }) {
+  const { address } = useAccount();
+  const chainId = useChainId();
+  const signer = useEthersSigner({ chainId: chainId });
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+
+  const decryptFileHandler = useCallback(
+    async function () {
+      if (!request.meta || !address) return;
+
+      const file = await decryptFileWithEOAAccess(
+        chainId,
+        signer?.provider as any,
+        address.toLowerCase(),
+        request.meta
+      );
+
+      if (!file) {
+        throw new Error("Failed to decrypt file");
+      }
+
+      setImageBlob(file);
+    },
+    [chainId, request.meta, address, signer]
+  );
+
   return (
     <div>
       <div>Request id: {request.id}</div>
@@ -30,10 +57,8 @@ function ApprovedRequest({ request }: { request: RequestModel }) {
       <div>Status: {request.status}</div>
 
       <h1>DO NOT LEAK! LEAKAGE IS TRACEBLE</h1>
-      <img
-        src="https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg"
-        width={500}
-      />
+      {!imageBlob && <button onClick={decryptFileHandler}>Decrypt file</button>}
+      {imageBlob && <img src={URL.createObjectURL(imageBlob)} width={500} />}
     </div>
   );
 }
