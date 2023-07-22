@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { RequestStatus, Request as RequestModel } from "../models/Request";
+import { api } from "../api/api";
+import { useAccount } from "wagmi";
 
 function RejectedRequest() {
   return (
@@ -10,18 +12,11 @@ function RejectedRequest() {
   );
 }
 
-function PendingRequest({
-  request,
-  onSubmit,
-}: {
-  request: RequestModel;
-  onSubmit: () => void;
-}) {
+function PendingRequest({ request }: { request: RequestModel }) {
   return (
     <div>
-      <div>Distibutor: {request.distibutor}</div>
+      <div>Distibutor: {request.distributor}</div>
       <div>Status: {request.status}</div>
-      <button onClick={onSubmit}>Submit request</button>
     </div>
   );
 }
@@ -30,7 +25,7 @@ function ApprovedRequest({ request }: { request: RequestModel }) {
   return (
     <div>
       <div>Request id: {request.id}</div>
-      <div>Distibutor: {request.distibutor}</div>
+      <div>Distibutor: {request.distributor}</div>
       <div>Status: {request.status}</div>
 
       <h1>DO NOT LEAK! LEAKAGE IS TRACEBLE</h1>
@@ -42,69 +37,52 @@ function ApprovedRequest({ request }: { request: RequestModel }) {
   );
 }
 
-function NoRequest({ itemId }: { itemId: string }) {
+function NoRequest({ onSubmit }: { itemId: string; onSubmit: () => void }) {
   return (
     <div>
       <div>Submit request to view the item</div>
-      <button
-        onClick={() => {
-          // TODO add request to backend
-          alert("Request submitted for item id: " + itemId);
-        }}
-      >
-        Request
-      </button>
+      <button onClick={onSubmit}>Request</button>
     </div>
   );
 }
 
 export function Request({ itemId }: { itemId: string }) {
+  const account = useAccount();
   const [request, setRequest] = useState<null | RequestModel>(null);
 
   useEffect(() => {
-    // TODO - call backend to get request
-    if (!itemId) {
-      return;
-    }
-
-    if (Math.random() > 0.5) {
-      setRequest({
-        id: "SOME_ID",
-        initinator: "0x103FA68B461bdBDbc5456Fd3164f8A71fd25eb5f",
-        distibutor: "0x103FA68B461bdBDbc5456Fd3164f8A71fd25eb5f",
-        status: RequestStatus.PENDING,
-        itemId,
-      });
-    } else {
-      setRequest({
-        id: "SOME_ID",
-        initinator: "0x103FA68B461bdBDbc5456Fd3164f8A71fd25eb5f",
-        distibutor: "0x103FA68B461bdBDbc5456Fd3164f8A71fd25eb5f",
-        status: RequestStatus.APPROVED,
-        itemId,
-      });
-    }
-  }, [itemId]);
+    api.getRequest(itemId).then((request) => {
+      setRequest(request);
+    });
+  }, []);
 
   return (
     <div>
       <div>Item id: {itemId}</div>
       {request?.status === RequestStatus.PENDING && (
-        <PendingRequest
-          request={request}
-          onSubmit={function (): void {
-            // TODO
-            alert("Request submitted for item id: " + itemId);
-          }}
-        />
+        <PendingRequest request={request} />
       )}
       {request?.status === RequestStatus.APPROVED && (
         <ApprovedRequest request={request} />
       )}
-      {request?.status === RequestStatus.REJECTED && (
-        <RejectedRequest />
+      {request?.status === RequestStatus.REJECTED && <RejectedRequest />}
+      {!request && (
+        <NoRequest
+          onSubmit={function (): void {
+            api
+              .createRequest({
+                initiator: account.address!,
+                distributor: account.address!,
+                status: RequestStatus.PENDING,
+                itemId,
+              })
+              .then((request) => {
+                setRequest(request);
+              });
+          }}
+          itemId={itemId}
+        />
       )}
-      {!request && <NoRequest itemId={itemId} />}
     </div>
   );
 }

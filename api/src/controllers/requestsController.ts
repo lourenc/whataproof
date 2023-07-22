@@ -45,6 +45,7 @@ export const getSingleRequest = async (req: FastifyRequest) => {
 
 export const addRequest = async (req: FastifyRequest) => {
 	try {
+            console.log("BODY!!!!", req.body);
 		const request = new Request(req.body);
 		await request.save();
                 return mapRequest(request);

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
 import { Item } from "../models/Item";
-import { Request } from "../models/Request";
+import { Request, RequestStatus } from "../models/Request";
 
 export class Api {
   axios: AxiosInstance;
@@ -22,7 +22,12 @@ export class Api {
     return response.data;
   }
 
-  async createRequest(request: Request): Promise<Request> {
+  async createRequest(request: {
+    initiator: string;
+    distributor: string;
+    status: RequestStatus;
+    itemId: string;
+  }): Promise<Request> {
     const response = await this.axios.post(`/requests`, request);
     return response.data;
   }

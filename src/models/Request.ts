@@ -6,8 +6,9 @@ export enum RequestStatus {
 
 export interface Request {
   id: string;
-  initinator: string;
-  distibutor: string;
+  initiator: string;
+  distributor: string;
   status: RequestStatus;
   itemId: string;
 }
+

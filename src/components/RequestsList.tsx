@@ -4,29 +4,29 @@ import '../main.css';
 const requests: Request[] = [
   {
     id: "1",
-    initinator: "0x12312312312312313",
-    distibutor: "0x12312312312312313",
+    initiator: "0x12312312312312313",
+    distributor: "0x12312312312312313",
     status: RequestStatus.PENDING,
     itemId: "item-id-1",
   },
   {
     id: "2",
-    initinator: "0x12312312312312313",
-    distibutor: "0x12312312312312313",
+    initiator: "0x12312312312312313",
+    distributor: "0x12312312312312313",
     status: RequestStatus.APPROVED,
     itemId: "item-id-2",
   },
   {
     id: "3",
-    initinator: "0x12312312312312313",
-    distibutor: "0x12312312312312313",
+    initiator: "0x12312312312312313",
+    distributor: "0x12312312312312313",
     status: RequestStatus.REJECTED,
     itemId: "item-id-3",
   },
 ];
 
 export function RequestsListItem(props: Request) {
-  const { id, initinator, distibutor, itemId} = props;
+  const { id, initiator: initinator, distributor: distibutor, itemId} = props;
   return (
     <tr>
       <td>{id}</td>

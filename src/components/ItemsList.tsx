@@ -6,7 +6,8 @@ import { itemsAtom } from "../state/items";
 import { api } from "../api/api";
 
 export function ItemsListItem(props: Item) {
-  const link = `${window.location.hostname}/item/${props.id}`;
+  const port = window.location.port ? `:${window.location.port}` : "";
+  const link = `${window.location.protocol}//${window.location.hostname}${port}/item/${props.id}`;
   return (
     <div>
       <span>
@@ -24,7 +25,7 @@ export function ItemsList() {
   const [items, setItems] = useAtom(itemsAtom);
 
   useEffect(() => {
-    api.getItems().then(setItems)
+    api.getItems().then(setItems);
   }, []);
 
   return (
