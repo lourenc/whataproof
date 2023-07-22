@@ -1,8 +1,8 @@
 import boom from 'boom';
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { ServerResponse } from 'http';
 
 import Item, { ItemSchema } from '../models/Item';
-import { ServerResponse } from 'http';
 
 const mapItem = (item: ItemSchema) => {
     return {

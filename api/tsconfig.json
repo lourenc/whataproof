@@ -2,6 +2,7 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
+        "skipLibCheck": true,
         "lib": [
             "es6"
         ],
@@ -13,5 +14,5 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
     },
-    "exclude": ["node_modules", "**/*.spec.ts"]
+    "exclude": ["node_modules", "**/*.spec.ts", "dist", "build"]
 }

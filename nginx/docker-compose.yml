@@ -1,0 +1,47 @@
+version: "3"
+services:
+  nginx:
+    logging:
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "nginx"
+      driver: gelf
+    image: nginx:1.23.2
+    restart: on-failure
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+      - /etc/letsencrypt/live/ethereum.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/ethereum.coordinator.curra.io/fullchain.pem
+      - /etc/letsencrypt/live/ethereum.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/ethereum.coordinator.curra.io/privkey.pem
+
+      - /etc/letsencrypt/live/docs.curra.io/fullchain.pem:/etc/letsencrypt/live/docs.curra.io/fullchain.pem
+      - /etc/letsencrypt/live/docs.curra.io/privkey.pem:/etc/letsencrypt/live/docs.curra.io/privkey.pem
+
+      - /etc/letsencrypt/live/goerli.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/goerli.coordinator.curra.io/fullchain.pem
+      - /etc/letsencrypt/live/goerli.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/goerli.coordinator.curra.io/privkey.pem
+
+      - /etc/letsencrypt/live/bsc.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/bsc.coordinator.curra.io/fullchain.pem
+      - /etc/letsencrypt/live/bsc.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/bsc.coordinator.curra.io/privkey.pem
+
+      - /etc/letsencrypt/live/polygon.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/polygon.coordinator.curra.io/fullchain.pem
+      - /etc/letsencrypt/live/polygon.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/polygon.coordinator.curra.io/privkey.pem
+
+      - /etc/letsencrypt/live/kcc.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/kcc.coordinator.curra.io/fullchain.pem
+      - /etc/letsencrypt/live/kcc.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/kcc.coordinator.curra.io/privkey.pem
+
+      - /etc/letsencrypt/live/app.curra.io/fullchain.pem:/etc/letsencrypt/live/app.curra.io/fullchain.pem
+      - /etc/letsencrypt/live/app.curra.io/privkey.pem:/etc/letsencrypt/live/app.curra.io/privkey.pem
+
+      - /etc/letsencrypt/live/curra.io/fullchain.pem:/etc/letsencrypt/live/curra.io/fullchain.pem
+      - /etc/letsencrypt/live/curra.io/privkey.pem:/etc/letsencrypt/live/curra.io/privkey.pem
+
+      - /etc/letsencrypt/live/invoice.curra.io/fullchain.pem:/etc/letsencrypt/live/invoice.curra.io/fullchain.pem
+      - /etc/letsencrypt/live/invoice.curra.io/privkey.pem:/etc/letsencrypt/live/invoice.curra.io/privkey.pem
+
+      - /etc/letsencrypt/live/kibana.curra.io/fullchain.pem:/etc/letsencrypt/live/kibana.curra.io/fullchain.pem
+      - /etc/letsencrypt/live/kibana.curra.io/privkey.pem:/etc/letsencrypt/live/kibana.curra.io/privkey.pem
+
+      - /etc/letsencrypt/options-ssl-nginx.conf:/etc/letsencrypt/options-ssl-nginx.conf
