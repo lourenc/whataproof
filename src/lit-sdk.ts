@@ -11,6 +11,7 @@ import {
   UnifiedAccessControlConditions,
   Chain,
   ILitNodeClient,
+  AcceptedFileType,
 } from "@lit-protocol/types";
 
 const litNodeClient = new LitJsSdk.LitNodeClient({});
@@ -63,7 +64,7 @@ export interface EncryptToWeb3StorageProps {
   solRpcConditions?: SolRpcConditions;
   unifiedAccessControlConditions?: UnifiedAccessControlConditions;
   chain: Chain;
-  string: string;
+  file: AcceptedFileType;
   litNodeClient: ILitNodeClient;
 }
 
@@ -75,12 +76,12 @@ export async function encryptToWeb3Storage({
   solRpcConditions,
   unifiedAccessControlConditions,
   chain,
-  string,
+  file,
   litNodeClient,
 }: EncryptToWeb3StorageProps) {
-  const encryptedString = await LitJsSdk.encryptString(string);
-  const encryptedData = encryptedString.encryptedString;
-  const symmetricKey = encryptedString.symmetricKey;
+  const encryptedFile = await LitJsSdk.encryptFile({ file: file });
+  const encryptedData = encryptedFile.encryptedFile;
+  const symmetricKey = encryptedFile.symmetricKey;
 
   const encryptedSymmetricKey = await litNodeClient.saveEncryptionKey({
     accessControlConditions,
@@ -104,8 +105,7 @@ export async function encryptToWeb3Storage({
 
   try {
     const dataToStore = JSON.stringify({
-      [string !== undefined ? "encryptedString" : "encryptedFile"]:
-        encryptedDataJson,
+      encryptedFile: encryptedDataJson,
       encryptedSymmetricKeyString,
       accessControlConditions,
       evmContractConditions,
@@ -155,12 +155,17 @@ export async function decryptFromWeb3Storage({
       sessionSigs,
     });
 
-    if (metadata.encryptedString !== undefined) {
-      const encryptedStringBlob = new Blob(
-        [Buffer.from(metadata.encryptedString)],
-        { type: "application/octet-stream" }
+    if (metadata.encryptedFile !== undefined) {
+      const encryptedFileBlob = new Blob(
+        [Buffer.from(metadata.encryptedFile)],
+        {
+          type: "application/octet-stream",
+        }
       );
-      return await LitJsSdk.decryptString(encryptedStringBlob, symmetricKey);
+      return await LitJsSdk.decryptFile({
+        file: encryptedFileBlob,
+        symmetricKey,
+      });
     }
   }
 }
@@ -170,7 +175,7 @@ export async function encryptStringWithEOAAccess(
   provider: providers.Web3Provider,
   account: string,
   externalAccount: string,
-  stringToEncrypt: string
+  fileToEncrypt: AcceptedFileType
 ) {
   const litNodeClient = await waitForConnect();
   const authSig = await getAuthSig(provider, account, chainId);
@@ -180,7 +185,7 @@ export async function encryptStringWithEOAAccess(
     litNodeClient: litNodeClient as any,
     chain: "filecoin",
     accessControlConditions: createACLForAccount(externalAccount, "filecoin"),
-    string: stringToEncrypt,
+    file: fileToEncrypt,
   });
 
   return cid;
