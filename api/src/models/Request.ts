@@ -12,6 +12,7 @@ export interface RequestSchema {
 	distributor: string;
 	status: RequestStatus;
 	itemId: string;
+        meta?: string
 }
 
 const requestSchema = new mongoose.Schema({
@@ -19,6 +20,7 @@ const requestSchema = new mongoose.Schema({
 	distributor: { type: String, required: true },
 	status: { type: String, enum: Object.values(RequestStatus), required: true },
 	itemId: { type: String, required: true },
+        meta: { type: String, required: false },
 });
 
 export default mongoose.model<RequestSchema>('Request', requestSchema);
