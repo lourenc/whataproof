@@ -8,7 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@lit-protocol/lit-nod-client": "^2.2.45",
+    "@lit-protocol/lit-node-client": "^2.2.45",
     "@rainbow-me/rainbowkit": "^1.0.0",
     "axios": "^1.4.0",
     "buffer": "^6.0.3",
