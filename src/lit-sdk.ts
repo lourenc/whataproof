@@ -95,7 +95,7 @@ export function createACLForERC20(
 const NEXT_ID_API_CALL_IPFS =
   "ipfs://QmSbpQBU6QKN3gY7JdWZzZPXR91eaxLBUxuvLv5JNvo7s1";
 
-export function createACLForNestId(
+export function createACLForNextId(
   platform: string,
   identity: string,
   chain: string
@@ -110,6 +110,30 @@ export function createACLForNestId(
       returnValueTest: {
         comparator: "=",
         value: "true",
+      },
+    },
+  ];
+}
+const ON_CHAIN_ACTIVITY_API_CALL_IPFS =
+  "ipfs://QmNNYNmupPPuxFvNqETxNecWTpi9G3NGtvn6meVr86k8wR";
+
+export function createACLForNestId(identity: string, chain: string) {
+  return [
+    {
+      contractAddress: ON_CHAIN_ACTIVITY_API_CALL_IPFS,
+      standardContractType: "LitAction",
+      chain,
+      method: "validate",
+      parameters: [
+        [
+          import.meta.env.VITE_QUICKNODE_ETH_API_KEY,
+          import.meta.env.VITE_QUICKNODE_MATIC_API_KEY,
+        ],
+        ":userAddress",
+      ],
+      returnValueTest: {
+        comparator: ">=",
+        value: "100",
       },
     },
   ];
