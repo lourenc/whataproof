@@ -6,7 +6,7 @@
       "id": "@id",
       "type": "@type",
       "BirthdayCredential": {
-        "@id": "https://raw.githubusercontent.com/0xPolygonID/issuer-node/main/docs/examples/json-ld/exampleInteger.json-ld#BirthdayCredential",
+        "@id": "https://raw.githubusercontent.com/lourenc/whataproof/polygon-id-action/polygon-id-schemas/birthday-scheme.json-ld#BirthdayCredential",
         "@context": {
           "@version": 1.1,
           "@protected": true,

@@ -1,7 +1,7 @@
 {
   "$metadata": {
     "uris": {
-      "jsonLdContext": "ipfs://QmezxuGBkV9Co7bsGvK6Q2qFbit2ZNjvzVV9oNTAZLtKqr"
+      "jsonLdContext": "https://raw.githubusercontent.com/lourenc/whataproof/polygon-id-action/polygon-id-schemas/birthday-scheme.json-ld"
     },
     "version": "1.0"
   },
