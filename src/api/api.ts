@@ -42,7 +42,10 @@ export class Api {
     return response.data;
   }
 
-  async updateRequest(id: string, request: Request): Promise<Request> {
+  async updateRequest(
+    id: string,
+    request: { meta?: string; status: RequestStatus }
+  ): Promise<Request> {
     const response = await this.axios.put(`/requests/${id}`, request);
     return response.data;
   }
