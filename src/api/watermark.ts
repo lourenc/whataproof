@@ -10,16 +10,20 @@ export class WatermarkApi {
   }
 
   addWatermark(formData: FormData) {
-    return this.axios.post("/process_image", formData, {
-      responseType: "arraybuffer",
-    });
+    return this.axios
+      .post("/process_image", formData, {
+        responseType: "arraybuffer",
+      })
+      .then((response) => response.data);
   }
 
-  checkWatermark(formData: FormData) {
-    return this.axios.post("/check_image", formData);
+  checkWatermark(formData: FormData): Promise<string> {
+    return this.axios
+      .post("/check_image", formData)
+      .then((response) => response.data);
   }
 }
 
 export const watermarkApi = new WatermarkApi(
-  import.meta.env.VITE_API_URL ?? "http://localhost:5000"
+  import.meta.env.VITE_API_URL ?? "http://127.0.0.1:5000"
 );
