@@ -7,6 +7,8 @@ services:
 
   client:
     build: .
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
 
   api:
     build: api
