@@ -124,6 +124,47 @@ export async function encryptToWeb3Storage({
   }
 }
 
+export interface DecryptFromWeb3StorageProps {
+  authSig?: AuthSig;
+  sessionSigs?: any;
+  ipfsCid: string;
+  litNodeClient: ILitNodeClient;
+}
+
+export async function decryptFromWeb3Storage({
+  authSig,
+  sessionSigs,
+  ipfsCid,
+  litNodeClient,
+}: DecryptFromWeb3StorageProps) {
+  const res = await web3StorageClient.get(ipfsCid);
+  const files = await res?.files();
+  const file = files ? files[0] : undefined;
+  const data = await file?.text();
+  if (data) {
+    const metadata = JSON.parse(data);
+    console.log(metadata);
+    const symmetricKey = await litNodeClient.getEncryptionKey({
+      accessControlConditions: metadata.accessControlConditions,
+      evmContractConditions: metadata.evmContractConditions,
+      solRpcConditions: metadata.solRpcConditions,
+      unifiedAccessControlConditions: metadata.unifiedAccessControlConditions,
+      toDecrypt: metadata.encryptedSymmetricKeyString,
+      chain: metadata.chain,
+      authSig,
+      sessionSigs,
+    });
+
+    if (metadata.encryptedString !== undefined) {
+      const encryptedStringBlob = new Blob(
+        [Buffer.from(metadata.encryptedString)],
+        { type: "application/octet-stream" }
+      );
+      return await LitJsSdk.decryptString(encryptedStringBlob, symmetricKey);
+    }
+  }
+}
+
 export async function encryptStringWithEOAAccess(
   chainId: number,
   provider: providers.Web3Provider,
@@ -154,7 +195,7 @@ export async function decryptStringWithEOAAccess(
   const litNodeClient = await waitForConnect();
   const authSig = await getAuthSig(provider, account, chainId);
 
-  const decryptedStuff = await LitJsSdk.decryptFromIpfs({
+  const decryptedStuff = await decryptFromWeb3Storage({
     authSig,
     litNodeClient: litNodeClient as any,
     ipfsCid,
