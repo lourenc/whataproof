@@ -26,7 +26,7 @@ export const getRequests = async (req: FastifyRequest): Promise<unknown[]> => {
 		if (req.query.itemId) {
 			Object.assign(match, { itemId: req.query.itemId });
 		}
-		const requests = await Request.find();
+		const requests = await Request.find(match);
 		return requests.map(mapRequest);
 	} catch (err) {
 		throw boom.boomify(err);

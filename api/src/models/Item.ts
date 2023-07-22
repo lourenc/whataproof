@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 
-interface ItemSchema {
-	meta: String,
-	distributor: String,
+export interface ItemSchema {
+	id: string;
+	meta: String;
+	distributor: String;
 }
 
 const itemSchema = new mongoose.Schema({

@@ -2,10 +2,17 @@ import * as fastify from 'fastify';
 import mongoose from 'mongoose';
 import routes from './routes';
 import { config } from './config';
+
+const corssss = require('@fastify/cors')
+
 const env = process.env.NODE_ENV;
 
 // Configure App
 const app = fastify.default({ logger: true });
+app.register(corssss, { 
+    origin: '*',
+})
+
 
 routes.forEach(route => {
 	app.route(route);

@@ -12,32 +12,39 @@ export class Api {
     });
   }
 
-  getItems(): Promise<Item[]> {
-    return this.axios.get(`/items`);
+  async createItem(item: Item): Promise<Item> {
+    const response = await this.axios.post(`/items`, item);
+    return response.data;
   }
 
-  createItem(item: Item): Promise<Item> {
-    return this.axios.post(`/items`, item);
+  async getItem(id: string): Promise<Item> {
+    const response = await this.axios.get(`/items/${id}`);
+    return response.data;
   }
 
-  getItem(id: string): Promise<Item> {
-    return this.axios.get(`/items/${id}`);
+  async createRequest(request: Request): Promise<Request> {
+    const response = await this.axios.post(`/requests`, request);
+    return response.data;
   }
 
-  createRequest(request: Request): Promise<Request> {
-    return this.axios.post(`/requests`, request);
+  async getRequests(): Promise<Request[]> {
+    const response = await this.axios.get(`/requests`);
+    return response.data;
   }
 
-  getRequests(): Promise<Request[]> {
-    return this.axios.get(`/requests`);
+  async getRequest(id: string): Promise<Request> {
+    const response = await this.axios.get(`/requests/${id}`);
+    return response.data;
   }
 
-  getRequest(id: string): Promise<Request> {
-    return this.axios.get(`/requests/${id}`);
+  async updateRequest(id: string, request: Request): Promise<Request> {
+    const response = await this.axios.put(`/requests/${id}`, request);
+    return response.data;
   }
 
-  updateRequest(id: string, request: Request): Promise<Request> {
-    return this.axios.put(`/requests/${id}`, request);
+  async getItems(): Promise<Item[]> {
+    const response = await this.axios.get(`/items`);
+    return response.data;
   }
 }
 

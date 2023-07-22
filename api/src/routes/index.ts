@@ -15,6 +15,12 @@ const getItem: RouteOptions = {
 	handler: itemsController.getItem,
 };
 
+const getItems: RouteOptions = {
+	method: 'GET',
+	url: '/items',
+	handler: itemsController.getItems,
+};
+
 const getRequestsRoute: RouteOptions = {
 	method: 'GET',
 	url: '/requests',
@@ -48,6 +54,7 @@ const deleteRequestRoute: RouteOptions = {
 const routes = [
 	createItem,
 	getItem,
+        getItems,
 	getRequestsRoute,
 	getRequestRoute,
 	postRequestRoute,
