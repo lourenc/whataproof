@@ -54,6 +54,9 @@ export function CreateItemLink() {
     setItemId(savedItem.id);
   };
 
+  const port = window.location.port ? `:${window.location.port}` : "";
+  const link = `${window.location.protocol}//${window.location.hostname}${port}/item/${itemId}`;
+
   return (
     <div>
       <label>Load a file you want to distibute</label>
@@ -76,12 +79,8 @@ export function CreateItemLink() {
       {itemId && imageBlob && (
         <>
           <div>Your item is ready to be distributed!</div>
-          <div>Item id: {itemId}</div>
           <div>
-            Link:{" "}
-            <a href={`https://${window.location.host}/item/${itemId}`}>
-              https://{window.location.host}/item/{itemId}
-            </a>
+            Link: <a href={link}>{link}</a>
           </div>
           <img
             id="watermarked-image"
