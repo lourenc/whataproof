@@ -46,19 +46,11 @@ export function CreateItemLink() {
     // watermarkedImageElement.src = imageUrl;
 
     const savedItem = await api.createItem({
-      meta: "",
+      meta: account.address!,
       distributor: account.address!,
     });
 
-    // .then((item) => {
     setItems((items) => [savedItem, ...items]);
-    // })
-    // .catch((error) => {
-    //   // Handle errors here
-    //   console.error("Error:", error);
-    // });
-
-    // TODO - call backend to upload file, get watermarked bytes, encrypt and load to filecoin
     setItemId(savedItem.id);
   };
 
