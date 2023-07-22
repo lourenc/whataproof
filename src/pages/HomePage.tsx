@@ -8,6 +8,7 @@ import { NetworkSwitcher } from '../components/NetworkSwitcher'
 import { CreateItemLink } from '../components/CreateItemLink'
 import { Blame } from '../components/Blame'
 import { RequestsList } from '../components/RequestsList'
+import { ItemsList } from '../components/ItemsList';
 
 export function HomePage() {
   const { isConnected } = useAccount()
@@ -35,6 +36,11 @@ export function HomePage() {
               <span className="title">Blame</span>
               <Blame />
             </div>
+          </div>
+          <br />
+          <div className="nes-container with-title">
+            <span className="title">Distributed items</span>
+            <ItemsList />
           </div>
           <br />
           <div className="nes-container with-title">
