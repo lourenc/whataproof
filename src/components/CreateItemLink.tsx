@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { useSetAtom } from "jotai";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 
-import { watermarkApi } from "../api/watermark";
 import { itemsAtom } from "../state/items";
 import { api } from "../api/api";
 
+import { encryptFileWithEOAAccess } from "../lit-sdk";
+import { useEthersSigner } from "../hooks/useEthersSigner";
+
 export function CreateItemLink() {
   const account = useAccount();
+  const chainId = useChainId();
+  const ethersSigner = useEthersSigner({ chainId });
+
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [itemId, setItemId] = useState<string>("");
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
@@ -21,45 +26,44 @@ export function CreateItemLink() {
 
   // On file upload (click the upload button)
   const onFileUpload = async () => {
-    // Create an object of formData
-    const formData = new FormData();
+    if (!ethersSigner || !account.address) {
+      return;
+    }
 
-    // Update the formData object
-    formData.append("image", selectedFile, selectedFile.name);
-    formData.append("key", "test");
+    // // Create an object of formData
+    // const formData = new FormData();
 
-    // Request made to the backend api
-    // Send formData object
+    // formData.append("image", selectedFile, selectedFile.name);
+    // formData.append("key", "test");
 
-    const watermarkedImageResponse = await watermarkApi.addWatermark(formData);
-
-    // Create a blob from the received binary data
-    const watermarkedImageBlob = new Blob([watermarkedImageResponse.data], {
-      type: watermarkedImageResponse.headers["content-type"],
-    });
-
-    setImageBlob(watermarkedImageBlob);
-
-    // const watermarkedImageElement = document.getElementById(
-    //   "watermarked-image"
-    // ) as HTMLImageElement;
-    // watermarkedImageElement.src = imageUrl;
-
-    const savedItem = await api.createItem({
-      meta: "",
-      distributor: account.address!,
-    });
-
-    // .then((item) => {
-    setItems((items) => [savedItem, ...items]);
-    // })
-    // .catch((error) => {
-    //   // Handle errors here
-    //   console.error("Error:", error);
+    // const watermarkedImageResponse = await watermarkApi.addWatermark(formData);
+    // const watermarkedImageBlob = new Blob([watermarkedImageResponse.data], {
+    //   type: watermarkedImageResponse.headers["content-type"],
     // });
 
-    // TODO - call backend to upload file, get watermarked bytes, encrypt and load to filecoin
+    // console.log("here is watermark", watermarkedImageBlob);
+
+    setImageBlob(selectedFile);
+
+    const cidString = await encryptFileWithEOAAccess(
+      chainId,
+      ethersSigner.provider as any,
+      account.address.toLowerCase(),
+      account.address.toLowerCase(),
+      selectedFile
+    );
+
+    if (!cidString) {
+      throw new Error("Failed to save encrypted to LIT");
+    }
+
+    const savedItem = await api.createItem({
+      meta: cidString,
+      distributor: account.address,
+    });
+
     setItemId(savedItem.id);
+    setItems((items) => [savedItem, ...items]);
   };
 
   return (
