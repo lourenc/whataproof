@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "nes.css/css/nes.min.css";
+import { watermarkApi } from "../api/watermark";
 
 export function Blame() {
   const [selectedFile, setSelectedFile] = useState<any>(null);
@@ -18,8 +19,8 @@ export function Blame() {
 
     formData.append("image", selectedFile, selectedFile.name);
 
-    axios
-      .post("http://127.0.0.1:5000/check_image", formData)
+    watermarkApi
+      .checkWatermark(formData)
       .then((response) => {
         const key = response.data;
         // \u0000\u0000\u0000\u0000 if no key found
