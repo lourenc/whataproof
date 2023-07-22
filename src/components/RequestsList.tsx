@@ -1,4 +1,5 @@
 import { RequestStatus, Request } from "../models/Request";
+import '../main.css';
 
 const requests: Request[] = [
   {
@@ -25,37 +26,45 @@ const requests: Request[] = [
 ];
 
 export function RequestsListItem(props: Request) {
+  const { id, initinator, distibutor, itemId} = props;
   return (
-    <div>
-      <span>
-        <b>ID:</b> {props.id}{" "}
-      </span>
-      <span>
-        <b>Initiator:</b> {props.initinator}{" "}
-      </span>
-      <span>
-        <b>Distributor:</b> {props.distibutor}{" "}
-      </span>
-      <span>
-        <b>Id:</b> {props.itemId}{" "}
-      </span>
-      {props.status === RequestStatus.PENDING ? (
-        <>
-          <button>Approve</button> <button>Reject</button>
-        </>
+    <tr>
+      <td>{id}</td>
+      <td>{initinator}</td>
+      <td>{distibutor}</td>
+      <td>{itemId}</td>
+      <td>{props.status === RequestStatus.PENDING ? (
+        <div className="vertical-small-gap">
+          <button className="nes-btn is-success">Approve</button>
+          <button className="nes-btn is-error">Reject</button>
+        </div>
       ) : (
         props.status
       )}
-    </div>
+      </td>
+    </tr>
   );
 }
 
 export function RequestsList() {
   return (
-    <div>
-      {requests.map((request) => (
-        <RequestsListItem {...request} />
-      ))}
+    <div className="nes-table-responsive">
+        <table className="nes-table is-bordered is-centered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Initiator</th>
+              <th>Distributor</th>
+              <th>ItemId</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {requests.map((request) => (
+              <RequestsListItem {...request} />
+            ))}
+          </tbody>
+        </table>
     </div>
   );
 }

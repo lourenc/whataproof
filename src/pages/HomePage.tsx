@@ -1,7 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
 import 'nes.css/css/nes.min.css';
-import './HomePage.css';
+import '../main.css';
 
 import { Account } from '../components/Account'
 import { NetworkSwitcher } from '../components/NetworkSwitcher'
