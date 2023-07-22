@@ -3,7 +3,6 @@ import { useAccount } from 'wagmi'
 
 import { Account } from '../components/Account'
 import { NetworkSwitcher } from '../components/NetworkSwitcher'
-import { RequestsList } from '../components/RequestsList'
 import { Request } from '../components/Request'
 
 export function ItemPage({ id }: { id: string }) {
@@ -25,9 +24,6 @@ export function ItemPage({ id }: { id: string }) {
           <h2>Account</h2>
           <Account />
           <br />
-          <hr />
-          <h2>Requests</h2>
-          <RequestsList />
           <hr />
           <h2>Request</h2>
           <Request itemId={id}/>

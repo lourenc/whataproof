@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
+import 'nes.css/css/nes.min.css';
 
 export function Blame() {
   const [selectedFile, setSelectedFile] = useState<any>(null);
@@ -38,9 +39,13 @@ export function Blame() {
     <div>
       <label>Load a file to detect a leaker</label>
       <div>
-        <input onChange={onFileChange} type="file"></input>
+        <label htmlFor="fileInput" className={`nes-btn ${selectedFile ? 'is-primary' : ''}`}>
+          Select File
+          <input type="file" id="fileInput" onChange={onFileChange}></input>
+        </label>
         <br />
-        <button onClick={onFileUpload}>Detect leaker</button>
+        <p>{ selectedFile? selectedFile.name: "No file chosen" }</p>
+        <button className="nes-btn" onClick={onFileUpload}>Detect leaker</button>
       </div>
       <div>
         Watermark: <p id="watermark"></p>
