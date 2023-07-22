@@ -6,6 +6,7 @@ import { WagmiConfig } from 'wagmi'
 
 import { App } from './App'
 import { chains, config } from './wagmi'
+import 'nes.css/css/nes.min.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

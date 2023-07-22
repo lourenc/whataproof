@@ -36,6 +36,9 @@ export function RequestsListItem(props: Request) {
       <span>
         <b>Distributor:</b> {props.distibutor}{" "}
       </span>
+      <span>
+        <b>Id:</b> {props.itemId}{" "}
+      </span>
       {props.status === RequestStatus.PENDING ? (
         <>
           <button>Approve</button> <button>Reject</button>

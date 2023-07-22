@@ -50,9 +50,14 @@ export function CreateItemLink() {
     <div>
       <label>Load a file you want to distibute</label>
       <div>
-        <input onChange={onFileChange} type="file"></input>
+        <label htmlFor="fileInput" className={`nes-btn ${selectedFile ? 'is-primary' : ''}`}>
+          Select File
+          <input type="file" id="fileInput" onChange={onFileChange}></input>
+        </label>
+        <br />
+        <p>{ selectedFile? selectedFile.name: "No file chosen" }</p>
       </div>
-      {selectedFile && <button onClick={onFileUpload}>Get link</button>}
+      {selectedFile && <button className="nes-btn" onClick={onFileUpload}>Get link</button>}
       {itemId && (
         <>
           <div>Your item is ready to be distributed!</div>
