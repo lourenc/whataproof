@@ -1,25 +1,26 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAccount } from 'wagmi'
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
-import { Account } from './components/Account'
-import { Balance } from './components/Balance'
-import { BlockNumber } from './components/BlockNumber'
-import { NetworkSwitcher } from './components/NetworkSwitcher'
-import { ReadContract } from './components/ReadContract'
-import { ReadContracts } from './components/ReadContracts'
-import { ReadContractsInfinite } from './components/ReadContractsInfinite'
-import { SendTransaction } from './components/SendTransaction'
-import { SendTransactionPrepared } from './components/SendTransactionPrepared'
-import { SignMessage } from './components/SignMessage'
-import { SignTypedData } from './components/SignTypedData'
-import { Token } from './components/Token'
-import { WatchContractEvents } from './components/WatchContractEvents'
-import { WatchPendingTransactions } from './components/WatchPendingTransactions'
-import { WriteContract } from './components/WriteContract'
-import { WriteContractPrepared } from './components/WriteContractPrepared'
+import { Account } from "./components/Account";
+import { Balance } from "./components/Balance";
+import { BlockNumber } from "./components/BlockNumber";
+import { NetworkSwitcher } from "./components/NetworkSwitcher";
+import { ReadContract } from "./components/ReadContract";
+import { ReadContracts } from "./components/ReadContracts";
+import { ReadContractsInfinite } from "./components/ReadContractsInfinite";
+import { SendTransaction } from "./components/SendTransaction";
+import { SendTransactionPrepared } from "./components/SendTransactionPrepared";
+import { SignMessage } from "./components/SignMessage";
+import { SignTypedData } from "./components/SignTypedData";
+import { Token } from "./components/Token";
+import { WatchContractEvents } from "./components/WatchContractEvents";
+import { WatchPendingTransactions } from "./components/WatchPendingTransactions";
+import { WriteContract } from "./components/WriteContract";
+import { WriteContractPrepared } from "./components/WriteContractPrepared";
+import { LitPlayground } from "./components/LitPlayground";
 
 export function App() {
-  const { isConnected } = useAccount()
+  const { isConnected } = useAccount();
 
   return (
     <>
@@ -92,8 +93,11 @@ export function App() {
           <hr />
           <h2>Write Contract (Prepared)</h2>
           <WriteContractPrepared />
+
+          <h2>Lit Playground</h2>
+          <LitPlayground />
         </>
       )}
     </>
-  )
+  );
 }
