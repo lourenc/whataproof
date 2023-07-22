@@ -1,0 +1,17 @@
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.main-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.main-content-col {
+    max-width: 575px;
+    flex: 1;
+}

@@ -10,6 +10,7 @@ const mapRequest = (request: RequestSchema) => {
 		distributor: request.distributor,
 		status: request.status,
 		itemId: request.itemId,
+		meta: request.meta,
 	};
 };
 
