@@ -9,4 +9,5 @@ export interface Request {
   initinator: string;
   distibutor: string;
   status: RequestStatus;
+  itemId: string;
 }

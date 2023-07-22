@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-export function CreateItemLink() {
+export function Blame() {
   const [selectedFile, setSelectedFile] = useState<any>(null);
-  const [itemId, setItemId] = useState<string>("");
+  const [leaker, setLeaker] = useState<string>("");
 
   const onFileChange = (event: any) => {
     // Update the state
@@ -22,26 +22,21 @@ export function CreateItemLink() {
 
     // axios.post("api/uploadfile", formData);
     // TODO - call backend to upload file, get watermarked bytes, encrypt and load to filecoin
-    setItemId("MOCKED-ITEM-ID");
+    setLeaker("0x103FA68B461bdBDbc5456Fd3164f8A71fd25eb5f");
   };
 
   return (
     <div>
-      <label>Load a file you want to distibute</label>
+      <label>Load a file to detect a leaker</label>
       <div>
         <input onChange={onFileChange} type="file"></input>
+        <br />
+        <button onClick={onFileUpload}>Detect leaker</button>
       </div>
-      {selectedFile && <button onClick={onFileUpload}>Get link</button>}
-      {itemId && (
+      {leaker && (
         <>
-          <div>Your item is ready to be distributed!</div>
-          <div>Item id: {itemId}</div>
-          <div>
-            Link:{" "}
-            <a href={`https://${window.location.host}/item/${itemId}`}>
-              https://{window.location.host}/item/{itemId}
-            </a>
-          </div>
+          <div>Leaker is:</div>
+          <div>{leaker}</div>
         </>
       )}
     </div>

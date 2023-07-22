@@ -6,18 +6,21 @@ const requests: Request[] = [
     initinator: "0x12312312312312313",
     distibutor: "0x12312312312312313",
     status: RequestStatus.PENDING,
+    itemId: "item-id-1",
   },
   {
     id: "2",
     initinator: "0x12312312312312313",
     distibutor: "0x12312312312312313",
     status: RequestStatus.APPROVED,
+    itemId: "item-id-2",
   },
   {
     id: "3",
     initinator: "0x12312312312312313",
     distibutor: "0x12312312312312313",
     status: RequestStatus.REJECTED,
+    itemId: "item-id-3",
   },
 ];
 

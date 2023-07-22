@@ -6,6 +6,8 @@ import { Balance } from './components/Balance'
 import { NetworkSwitcher } from './components/NetworkSwitcher'
 import { RequestsList } from './components/RequestsList'
 import { CreateItemLink } from './components/CreateItemLink'
+import { Blame } from './components/Blame'
+import { Request } from './components/Request'
 
 export function App() {
   const { isConnected } = useAccount()
@@ -32,8 +34,15 @@ export function App() {
           <hr />
           <h2>Requests</h2>
           <RequestsList />
+          <hr />
           <h2>Distribute</h2>
           <CreateItemLink />
+          <hr />
+          <h2>Blame</h2>
+          <Blame />
+          <hr />
+          <h2>Request</h2>
+          <Request itemId='itemId' />
         </>
       )}
     </>
