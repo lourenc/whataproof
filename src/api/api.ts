@@ -12,8 +12,8 @@ export class Api {
     });
   }
 
-  async createItem(item: Item): Promise<Item> {
-    const response = await this.axios.post(`/items`, item);
+  async createItem(dto: { meta: string; distributor: string }): Promise<Item> {
+    const response = await this.axios.post(`/items`, dto);
     return response.data;
   }
 

@@ -1,9 +1,16 @@
 import { useState } from "react";
+import { useAtom } from "jotai";
+
 import { watermarkApi } from "../api/watermark";
+import { itemsAtom } from "../state/items";
+import { api } from "../api/api";
+import { useAccount } from "wagmi";
 
 export function CreateItemLink() {
+  const account = useAccount();
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [itemId, setItemId] = useState<string>("");
+  const [items, setItems] = useAtom(itemsAtom);
 
   const onFileChange = (event: any) => {
     // Update the state
@@ -38,6 +45,10 @@ export function CreateItemLink() {
         watermarkedImageElement.src = imageUrl;
 
         setItemId("MOCKED-ITEM-ID");
+        return api.createItem({ meta: imageUrl, distributor: account.address! });
+      })
+      .then((item) => {
+        setItems((items) => [...items, item]);
       })
       .catch((error) => {
         // Handle errors here
