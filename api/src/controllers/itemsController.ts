@@ -16,8 +16,6 @@ export const createItem = async (req: FastifyRequest): Promise<unknown> => {
 export const getItem = async (req: FastifyRequest, rep: FastifyReply<ServerResponse>): Promise<unknown> => {
 	try {
 		const item = await Item.findById(req.params.id);
-                console.log(item);
-                console.log(req.params.id);
 		if (!item) return rep.code(404).send(boom.notFound('Item not found'));
 		return { id: item.id, meta: item.meta };
 	} catch (err) {
