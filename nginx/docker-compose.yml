@@ -14,34 +14,11 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
 
-      - /etc/letsencrypt/live/ethereum.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/ethereum.coordinator.curra.io/fullchain.pem
-      - /etc/letsencrypt/live/ethereum.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/ethereum.coordinator.curra.io/privkey.pem
+      - /etc/letsencrypt/live/api.whataproof.xyz/fullchain.pem:/etc/letsencrypt/live/api.whataproof.xyz/fullchain.pem
+      - /etc/letsencrypt/live/api.whataproof.xyz/privkey.pem:/etc/letsencrypt/live/api.whataproof.xyz/privkey.pem
 
-      - /etc/letsencrypt/live/docs.curra.io/fullchain.pem:/etc/letsencrypt/live/docs.curra.io/fullchain.pem
-      - /etc/letsencrypt/live/docs.curra.io/privkey.pem:/etc/letsencrypt/live/docs.curra.io/privkey.pem
+      - /etc/letsencrypt/live/stegapi.whataproof.xyz/fullchain.pem:/etc/letsencrypt/live/stegapi.whataproof.xyz/fullchain.pem
+      - /etc/letsencrypt/live/stegapi.whataproof.xyz/privkey.pem:/etc/letsencrypt/live/stegapi.whataproof.xyz/privkey.pem
 
-      - /etc/letsencrypt/live/goerli.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/goerli.coordinator.curra.io/fullchain.pem
-      - /etc/letsencrypt/live/goerli.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/goerli.coordinator.curra.io/privkey.pem
-
-      - /etc/letsencrypt/live/bsc.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/bsc.coordinator.curra.io/fullchain.pem
-      - /etc/letsencrypt/live/bsc.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/bsc.coordinator.curra.io/privkey.pem
-
-      - /etc/letsencrypt/live/polygon.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/polygon.coordinator.curra.io/fullchain.pem
-      - /etc/letsencrypt/live/polygon.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/polygon.coordinator.curra.io/privkey.pem
-
-      - /etc/letsencrypt/live/kcc.coordinator.curra.io/fullchain.pem:/etc/letsencrypt/live/kcc.coordinator.curra.io/fullchain.pem
-      - /etc/letsencrypt/live/kcc.coordinator.curra.io/privkey.pem:/etc/letsencrypt/live/kcc.coordinator.curra.io/privkey.pem
-
-      - /etc/letsencrypt/live/app.curra.io/fullchain.pem:/etc/letsencrypt/live/app.curra.io/fullchain.pem
-      - /etc/letsencrypt/live/app.curra.io/privkey.pem:/etc/letsencrypt/live/app.curra.io/privkey.pem
-
-      - /etc/letsencrypt/live/curra.io/fullchain.pem:/etc/letsencrypt/live/curra.io/fullchain.pem
-      - /etc/letsencrypt/live/curra.io/privkey.pem:/etc/letsencrypt/live/curra.io/privkey.pem
-
-      - /etc/letsencrypt/live/invoice.curra.io/fullchain.pem:/etc/letsencrypt/live/invoice.curra.io/fullchain.pem
-      - /etc/letsencrypt/live/invoice.curra.io/privkey.pem:/etc/letsencrypt/live/invoice.curra.io/privkey.pem
-
-      - /etc/letsencrypt/live/kibana.curra.io/fullchain.pem:/etc/letsencrypt/live/kibana.curra.io/fullchain.pem
-      - /etc/letsencrypt/live/kibana.curra.io/privkey.pem:/etc/letsencrypt/live/kibana.curra.io/privkey.pem
-
-      - /etc/letsencrypt/options-ssl-nginx.conf:/etc/letsencrypt/options-ssl-nginx.conf
+      - /etc/letsencrypt/live/whataproof.xyz/fullchain.pem:/etc/letsencrypt/live/whataproof.xyz/fullchain.pem
+      - /etc/letsencrypt/live/whataproof.xyz/privkey.pem:/etc/letsencrypt/live/whataproof.xyz/privkey.pem
