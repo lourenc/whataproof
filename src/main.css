@@ -3,6 +3,11 @@ body {
     position: relative;
 }
 
+html {
+    overflow-x: hidden;
+    position: relative;
+}
+
 .wrapper {
     max-width: 1200px;
     margin: 0 auto;
