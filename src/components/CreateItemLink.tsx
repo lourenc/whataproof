@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from 'axios';
 
 export function CreateItemLink() {
   const [selectedFile, setSelectedFile] = useState<any>(null);
@@ -15,12 +16,32 @@ export function CreateItemLink() {
     const formData = new FormData();
 
     // Update the formData object
-    formData.append("myFile", selectedFile, selectedFile.name);
+    formData.append("image", selectedFile, selectedFile.name);
+    formData.append("key", "test");
 
     // Request made to the backend api
     // Send formData object
 
-    // axios.post("api/uploadfile", formData);
+    axios.post("http://127.0.0.1:5000/process_image", formData, { responseType: 'arraybuffer' })
+    .then(response => {
+
+      // Create a blob from the received binary data
+      const imageBlob = new Blob([response.data], { type: response.headers['content-type'] });
+
+      const imageUrl = URL.createObjectURL(imageBlob);
+
+      const watermarkedImageElement = document.getElementById("watermarked-image") as HTMLImageElement;
+      watermarkedImageElement.src = imageUrl;
+
+      // URL.revokeObjectURL(imageUrl);
+
+      setItemId("MOCKED-ITEM-ID");
+    })
+    .catch(error => {
+      // Handle errors here
+      console.error("Error:", error);
+    });
+
     // TODO - call backend to upload file, get watermarked bytes, encrypt and load to filecoin
     setItemId("MOCKED-ITEM-ID");
   };
@@ -42,6 +63,7 @@ export function CreateItemLink() {
               https://{window.location.host}/item/{itemId}
             </a>
           </div>
+          <img id="watermarked-image" />
         </>
       )}
     </div>
