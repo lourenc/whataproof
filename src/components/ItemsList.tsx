@@ -22,7 +22,6 @@ export function ItemsListItem(props: Item) {
 
 export function ItemsList() {
   const [items, setItems] = useAtom(itemsAtom);
-  console.log("ITEMS!:,  ", items); 
 
   useEffect(() => {
     api.getItems().then(setItems)
