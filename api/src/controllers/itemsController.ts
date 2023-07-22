@@ -14,7 +14,7 @@ const mapItem = (item: ItemSchema) => {
 
 export const createItem = async (req: FastifyRequest): Promise<unknown> => {
 	try {
-		const item = await Item.create({ meta: req.body.meta });
+		const item = await Item.create(req.body);
 		return mapItem(item);
 	} catch (err) {
 		throw boom.boomify(err);

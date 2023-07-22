@@ -7,8 +7,8 @@ export interface ItemSchema {
 }
 
 const itemSchema = new mongoose.Schema({
-	meta: String,
-	distributor: String,
+	meta: { type: String, required: true },
+	distributor: { type: String, required: true },
 });
 
 export default mongoose.model<ItemSchema>('Item', itemSchema);

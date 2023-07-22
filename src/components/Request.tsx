@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { RequestStatus, Request as RequestModel } from "../models/Request";
 import { api } from "../api/api";
 import { useAccount } from "wagmi";
+import { Item } from "../models/Item";
 
 function RejectedRequest() {
   return (
@@ -49,12 +50,20 @@ function NoRequest({ onSubmit }: { itemId: string; onSubmit: () => void }) {
 export function Request({ itemId }: { itemId: string }) {
   const account = useAccount();
   const [request, setRequest] = useState<null | RequestModel>(null);
+  const [item, setItem] = useState<null | Item>(null);
 
   useEffect(() => {
     api.getRequest(itemId).then((request) => {
       setRequest(request);
     });
+    api.getItem(itemId).then((request) => {
+      setItem(request);
+    });
   }, []);
+
+  if (!item) {
+    return <h1>Item not found</h1>;
+  }
 
   return (
     <div>
@@ -69,10 +78,11 @@ export function Request({ itemId }: { itemId: string }) {
       {!request && (
         <NoRequest
           onSubmit={function (): void {
+            if (!item) return;
             api
               .createRequest({
                 initiator: account.address!,
-                distributor: account.address!,
+                distributor: item.distributor,
                 status: RequestStatus.PENDING,
                 itemId,
               })
