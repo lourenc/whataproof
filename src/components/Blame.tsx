@@ -39,9 +39,9 @@ export function Blame() {
     <div>
       <label>Load a file to detect a leaker</label>
       <div>
-        <label htmlFor="fileInput" className={`nes-btn ${selectedFile ? 'is-primary' : ''}`}>
+        <label htmlFor="fileInputBlame" className={`nes-btn ${selectedFile ? 'is-primary' : ''}`}>
           Select File
-          <input type="file" id="fileInput" onChange={onFileChange}></input>
+          <input type="file" id="fileInputBlame" onChange={onFileChange}></input>
         </label>
         <br />
         <p>{ selectedFile? selectedFile.name: "No file chosen" }</p>
