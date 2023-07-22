@@ -32,14 +32,18 @@ export class Api {
     return response.data;
   }
 
-  async getRequests(): Promise<Request[]> {
-    const response = await this.axios.get(`/requests`);
+  async getRequests(distributor: string): Promise<Request[]> {
+    const response = await this.axios.get(
+      `/requests?distributor=${distributor}`
+    );
     return response.data;
   }
 
-  async getRequest(id: string): Promise<Request> {
-    const response = await this.axios.get(`/requests/${id}`);
-    return response.data;
+  async getRequest(itemId: string, initiator: string): Promise<Request> {
+    const response = await this.axios.get(
+      `/requests?itemId=${itemId}&initiator=${initiator}`
+    );
+    return response.data[0];
   }
 
   async updateRequest(
@@ -50,8 +54,8 @@ export class Api {
     return response.data;
   }
 
-  async getItems(): Promise<Item[]> {
-    const response = await this.axios.get(`/items`);
+  async getItems(distributor: string): Promise<Item[]> {
+    const response = await this.axios.get(`/items?distributor=${distributor}`);
     return response.data;
   }
 }

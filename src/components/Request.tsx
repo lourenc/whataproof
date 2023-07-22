@@ -53,13 +53,16 @@ export function Request({ itemId }: { itemId: string }) {
   const [item, setItem] = useState<null | Item>(null);
 
   useEffect(() => {
-    api.getRequest(itemId).then((request) => {
+    if (!account.address) return;
+
+    api.getRequest(itemId, account.address).then((request) => {
       setRequest(request);
     });
+
     api.getItem(itemId).then((request) => {
       setItem(request);
     });
-  }, []);
+  }, [account.address]);
 
   if (!item) {
     return <h1>Item not found</h1>;

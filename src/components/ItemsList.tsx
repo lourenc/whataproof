@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Item } from "../models/Item";
 import { itemsAtom } from "../state/items";
 import { api } from "../api/api";
+import { useAccount } from "wagmi";
 
 export function ItemsListItem(props: Item) {
   const port = window.location.port ? `:${window.location.port}` : "";
@@ -23,10 +24,14 @@ export function ItemsListItem(props: Item) {
 
 export function ItemsList() {
   const [items, setItems] = useAtom(itemsAtom);
+  const account = useAccount();
 
   useEffect(() => {
-    api.getItems().then(setItems);
-  }, []);
+    if (!account.address) {
+      return;
+    }
+    api.getItems(account.address).then(setItems);
+  }, [account.address]);
 
   return (
     <div>
