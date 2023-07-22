@@ -21,5 +21,5 @@ export class WatermarkApi {
 }
 
 export const watermarkApi = new WatermarkApi(
-  import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8080"
+  import.meta.env.VITE_WATERMARK_API_URL ?? "http://127.0.0.1:8080"
 );
