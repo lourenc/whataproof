@@ -56,6 +56,42 @@ export function createACLForAccount(account: string, chain: string) {
   ];
 }
 
+export function createACLForNFT(nftAddress: string, chain: string) {
+  return [
+    {
+      contractAddress: nftAddress,
+      standardContractType: "ERC721",
+      chain,
+      method: "balanceOf",
+      parameters: [":userAddress"],
+      returnValueTest: {
+        comparator: ">",
+        value: "0",
+      },
+    },
+  ];
+}
+
+export function createACLForERC20(
+  tokenAddress: string,
+  minBalance: string,
+  chain: string
+) {
+  return [
+    {
+      contractAddress: tokenAddress,
+      standardContractType: "ERC20",
+      chain,
+      method: "balanceOf",
+      parameters: [":userAddress"],
+      returnValueTest: {
+        comparator: ">=",
+        value: minBalance,
+      },
+    },
+  ];
+}
+
 export interface EncryptToWeb3StorageProps {
   authSig?: AuthSig;
   sessionSigs?: any;
