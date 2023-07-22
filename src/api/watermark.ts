@@ -10,17 +10,13 @@ export class WatermarkApi {
   }
 
   addWatermark(formData: FormData) {
-    return this.axios
-      .post("/process_image", formData, {
-        responseType: "arraybuffer",
-      })
-      .then((response) => response.data);
+    return this.axios.post<ArrayBuffer>("/process_image", formData, {
+      responseType: "arraybuffer",
+    });
   }
 
-  checkWatermark(formData: FormData): Promise<string> {
-    return this.axios
-      .post("/check_image", formData)
-      .then((response) => response.data);
+  checkWatermark(formData: FormData) {
+    return this.axios.post<string>("/check_image", formData);
   }
 }
 

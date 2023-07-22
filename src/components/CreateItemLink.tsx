@@ -10,6 +10,8 @@ export function CreateItemLink() {
   const account = useAccount();
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [itemId, setItemId] = useState<string>("");
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+
   const setItems = useSetAtom(itemsAtom);
 
   const onFileChange = (event: any) => {
@@ -18,7 +20,7 @@ export function CreateItemLink() {
   };
 
   // On file upload (click the upload button)
-  const onFileUpload = () => {
+  const onFileUpload = async () => {
     // Create an object of formData
     const formData = new FormData();
 
@@ -29,37 +31,35 @@ export function CreateItemLink() {
     // Request made to the backend api
     // Send formData object
 
-    watermarkApi
-      .addWatermark(formData)
-      .then((response) => {
-        // Create a blob from the received binary data
-        const watermarkedImageBlob = new Blob([response.data], {
-          type: response.headers["content-type"],
-        });
+    const watermarkedImageResponse = await watermarkApi.addWatermark(formData);
 
-        const imageUrl = URL.createObjectURL(watermarkedImageBlob);
+    // Create a blob from the received binary data
+    const watermarkedImageBlob = new Blob([watermarkedImageResponse.data], {
+      type: watermarkedImageResponse.headers["content-type"],
+    });
 
-        const watermarkedImageElement = document.getElementById(
-          "watermarked-image"
-        ) as HTMLImageElement;
-        watermarkedImageElement.src = imageUrl;
+    setImageBlob(watermarkedImageBlob);
 
-        setItemId("MOCKED-ITEM-ID");
-        return api.createItem({
-          meta: imageUrl,
-          distributor: account.address!,
-        });
-      })
-      .then((item) => {
-        setItems((items) => [item, ...items]);
-      })
-      .catch((error) => {
-        // Handle errors here
-        console.error("Error:", error);
-      });
+    // const watermarkedImageElement = document.getElementById(
+    //   "watermarked-image"
+    // ) as HTMLImageElement;
+    // watermarkedImageElement.src = imageUrl;
+
+    const savedItem = await api.createItem({
+      meta: "",
+      distributor: account.address!,
+    });
+
+    // .then((item) => {
+    setItems((items) => [savedItem, ...items]);
+    // })
+    // .catch((error) => {
+    //   // Handle errors here
+    //   console.error("Error:", error);
+    // });
 
     // TODO - call backend to upload file, get watermarked bytes, encrypt and load to filecoin
-    setItemId("MOCKED-ITEM-ID");
+    setItemId(savedItem.id);
   };
 
   return (
@@ -81,7 +81,7 @@ export function CreateItemLink() {
           Get link
         </button>
       )}
-      {itemId && (
+      {itemId && imageBlob && (
         <>
           <div>Your item is ready to be distributed!</div>
           <div>Item id: {itemId}</div>
@@ -91,7 +91,11 @@ export function CreateItemLink() {
               https://{window.location.host}/item/{itemId}
             </a>
           </div>
-          <img id="watermarked-image" />
+          <img
+            id="watermarked-image"
+            width="100%"
+            src={URL.createObjectURL(imageBlob)}
+          />
         </>
       )}
     </div>

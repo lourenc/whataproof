@@ -206,7 +206,7 @@ export async function decryptFromWeb3Storage({
   }
 }
 
-export async function encryptStringWithEOAAccess(
+export async function encryptFileWithEOAAccess(
   chainId: number,
   provider: providers.Web3Provider,
   account: string,
@@ -227,7 +227,7 @@ export async function encryptStringWithEOAAccess(
   return cid;
 }
 
-export async function decryptStringWithEOAAccess(
+export async function decryptFileWithEOAAccess(
   chainId: number,
   provider: providers.Web3Provider,
   account: string,
