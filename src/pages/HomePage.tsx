@@ -2,7 +2,6 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
 
 import { Account } from '../components/Account'
-import { Balance } from '../components/Balance'
 import { NetworkSwitcher } from '../components/NetworkSwitcher'
 import { CreateItemLink } from '../components/CreateItemLink'
 import { Blame } from '../components/Blame'
@@ -26,10 +25,6 @@ export function HomePage() {
           <h2>Account</h2>
           <Account />
           <br />
-          <hr />
-          <h2>Balance</h2>
-          <Balance />
-          <hr />
           <hr />
           <h2>Distribute</h2>
           <CreateItemLink />
