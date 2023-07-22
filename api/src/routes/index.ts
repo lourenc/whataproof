@@ -1,5 +1,7 @@
 import { RouteOptions } from 'fastify';
+
 import * as itemsController from '../controllers/itemsController';
+import * as requestsController from '../controllers/requestsController';
 
 const createItem: RouteOptions = {
 	method: 'POST',
@@ -13,6 +15,44 @@ const getItem: RouteOptions = {
 	handler: itemsController.getItem,
 };
 
-const routes = [createItem, getItem];
+const getRequestsRoute: RouteOptions = {
+	method: 'GET',
+	url: '/requests',
+	handler: requestsController.getRequests,
+};
+
+const getRequestRoute: RouteOptions = {
+	method: 'GET',
+	url: '/requests/:id',
+	handler: requestsController.getSingleRequest,
+};
+
+const postRequestRoute: RouteOptions = {
+	method: 'POST',
+	url: '/requests',
+	handler: requestsController.addRequest,
+};
+
+const putRequestRoute: RouteOptions = {
+	method: 'PUT',
+	url: '/requests/:id',
+	handler: requestsController.updateRequest,
+};
+
+const deleteRequestRoute: RouteOptions = {
+	method: 'DELETE',
+	url: '/requests/:id',
+	handler: requestsController.deleteRequest,
+};
+
+const routes = [
+	createItem,
+	getItem,
+	getRequestsRoute,
+	getRequestRoute,
+	postRequestRoute,
+	putRequestRoute,
+	deleteRequestRoute,
+];
 
 export default routes;
