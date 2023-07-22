@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from 'axios';
+import { watermarkApi } from "../api/watermark";
 
 export function CreateItemLink() {
   const [selectedFile, setSelectedFile] = useState<any>(null);
@@ -22,25 +22,27 @@ export function CreateItemLink() {
     // Request made to the backend api
     // Send formData object
 
-    axios.post("http://127.0.0.1:5000/process_image", formData, { responseType: 'arraybuffer' })
-    .then(response => {
+    watermarkApi
+      .addWatermark(formData)
+      .then((response) => {
+        // Create a blob from the received binary data
+        const watermarkedImageBlob = new Blob([response.data], {
+          type: response.headers["content-type"],
+        });
 
-      // Create a blob from the received binary data
-      const imageBlob = new Blob([response.data], { type: response.headers['content-type'] });
+        const imageUrl = URL.createObjectURL(watermarkedImageBlob);
 
-      const imageUrl = URL.createObjectURL(imageBlob);
+        const watermarkedImageElement = document.getElementById(
+          "watermarked-image"
+        ) as HTMLImageElement;
+        watermarkedImageElement.src = imageUrl;
 
-      const watermarkedImageElement = document.getElementById("watermarked-image") as HTMLImageElement;
-      watermarkedImageElement.src = imageUrl;
-
-      // URL.revokeObjectURL(imageUrl);
-
-      setItemId("MOCKED-ITEM-ID");
-    })
-    .catch(error => {
-      // Handle errors here
-      console.error("Error:", error);
-    });
+        setItemId("MOCKED-ITEM-ID");
+      })
+      .catch((error) => {
+        // Handle errors here
+        console.error("Error:", error);
+      });
 
     // TODO - call backend to upload file, get watermarked bytes, encrypt and load to filecoin
     setItemId("MOCKED-ITEM-ID");
@@ -50,14 +52,21 @@ export function CreateItemLink() {
     <div>
       <label>Load a file you want to distibute</label>
       <div>
-        <label htmlFor="fileInput" className={`nes-btn ${selectedFile ? 'is-primary' : ''}`}>
+        <label
+          htmlFor="fileInput"
+          className={`nes-btn ${selectedFile ? "is-primary" : ""}`}
+        >
           Select File
           <input type="file" id="fileInput" onChange={onFileChange}></input>
         </label>
         <br />
-        <p>{ selectedFile? selectedFile.name: "No file chosen" }</p>
+        <p>{selectedFile ? selectedFile.name : "No file chosen"}</p>
       </div>
-      {selectedFile && <button className="nes-btn" onClick={onFileUpload}>Get link</button>}
+      {selectedFile && (
+        <button className="nes-btn" onClick={onFileUpload}>
+          Get link
+        </button>
+      )}
       {itemId && (
         <>
           <div>Your item is ready to be distributed!</div>
