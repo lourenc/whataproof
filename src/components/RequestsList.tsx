@@ -2,6 +2,7 @@ import { RequestStatus, Request } from "../models/Request";
 import "../main.css";
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
+import { useAccount } from "wagmi";
 
 export function RequestsListItem(
   props: Request & { onApprove: () => void; onReject: () => void }
@@ -9,10 +10,6 @@ export function RequestsListItem(
   const { id, initiator: initinator, distributor: distibutor, itemId } = props;
   return (
     <tr>
-      <td>{id}</td>
-      <td>{initinator}</td>
-      <td>{distibutor}</td>
-      <td>{itemId}</td>
       <td>
         {props.status === RequestStatus.PENDING ? (
           <div className="vertical-small-gap">
@@ -27,16 +24,22 @@ export function RequestsListItem(
           props.status
         )}
       </td>
+      <td>{id}</td>
+      <td>{initinator}</td>
+      <td>{distibutor}</td>
+      <td>{itemId}</td>
     </tr>
   );
 }
 
 export function RequestsList() {
   const [requests, setRequests] = useState<Request[]>([]);
+  const account = useAccount();
 
   useEffect(() => {
-    api.getRequests().then(setRequests);
-  }, []);
+    if (!account.address) return;
+    api.getRequests(account.address).then(setRequests);
+  }, [account.address]);
 
   const onApprove = (id: string) => {
     api
@@ -70,16 +73,20 @@ export function RequestsList() {
             <th>Status</th>
           </tr>
         </thead>
-        <tbody>
-          {requests.map((request) => (
-            <RequestsListItem
-              key={request.id}
-              onReject={() => onReject(request.id)}
-              onApprove={() => onApprove(request.id)}
-              {...request}
-            />
-          ))}
-        </tbody>
+        {requests.length ? (
+          <tbody>
+            {requests.map((request) => (
+              <RequestsListItem
+                key={request.id}
+                onReject={() => onReject(request.id)}
+                onApprove={() => onApprove(request.id)}
+                {...request}
+              />
+            ))}
+          </tbody>
+        ) : (
+          <div>No requests</div>
+        )}
       </table>
     </div>
   );
