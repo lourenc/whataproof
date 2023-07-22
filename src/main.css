@@ -9,7 +9,7 @@ html {
 }
 
 .wrapper {
-    max-width: 1200px;
+    max-width: 1204px;
     margin: 0 auto;
     padding: 40px 20px;
 }
@@ -22,7 +22,7 @@ html {
 }
 
 .main-content-col {
-    max-width: 575px;
+    max-width: 576px;
     flex: 1;
 }
 
@@ -30,4 +30,22 @@ html {
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+.on-hover-blue:hover {
+    color: #0E76FD;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    padding: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #adafbc;
+}
+
+::-webkit-scrollbar-track {
+    margin: 4px;
 }

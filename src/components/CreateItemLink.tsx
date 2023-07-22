@@ -96,7 +96,8 @@ export function CreateItemLink() {
           </div>
           <img
             id="watermarked-image"
-            width="100%"
+            width="100px"
+            height="100px"
             src={URL.createObjectURL(imageBlob)}
           />
         </>

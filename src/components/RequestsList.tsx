@@ -13,9 +13,24 @@ import mimetypes from "mime-types";
 export function RequestsListItem(
   props: Request & { onApprove: () => void; onReject: () => void }
 ) {
+  const shortenString = (text: string) => (text.length > 12)? text.slice(0, 6) + ".." + text.slice(-6) : text;
+  const handleTdClick = (event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>, fullText: string) => {
+    const td = event.target as HTMLTableCellElement;
+    const currentText = td.innerText;
+
+    if (currentText === shortenString(fullText)) {
+      td.innerText = fullText;
+    } else {
+      td.innerText = shortenString(fullText);
+    }
+  };
   const { id, initiator: initinator, distributor: distibutor, itemId } = props;
   return (
     <tr>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, id)}>{shortenString(id)}</td>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, initinator)}>{shortenString(initinator)}</td>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, distibutor)}>{shortenString(distibutor)}</td>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, itemId)}>{shortenString(itemId)}</td>
       <td>
         {props.status === RequestStatus.PENDING ? (
           <div className="vertical-small-gap">
@@ -30,10 +45,6 @@ export function RequestsListItem(
           props.status
         )}
       </td>
-      <td>{id}</td>
-      <td>{initinator}</td>
-      <td>{distibutor}</td>
-      <td>{itemId}</td>
     </tr>
   );
 }
