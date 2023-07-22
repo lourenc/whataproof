@@ -1,6 +1,6 @@
-import { useState } from "react";
-import axios from "axios";
 import "nes.css/css/nes.min.css";
+
+import { useState } from "react";
 import { watermarkApi } from "../api/watermark";
 
 export function Blame() {
