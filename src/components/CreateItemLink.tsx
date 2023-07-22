@@ -30,19 +30,6 @@ export function CreateItemLink() {
       return;
     }
 
-    // // Create an object of formData
-    // const formData = new FormData();
-
-    // formData.append("image", selectedFile, selectedFile.name);
-    // formData.append("key", "test");
-
-    // const watermarkedImageResponse = await watermarkApi.addWatermark(formData);
-    // const watermarkedImageBlob = new Blob([watermarkedImageResponse.data], {
-    //   type: watermarkedImageResponse.headers["content-type"],
-    // });
-
-    // console.log("here is watermark", watermarkedImageBlob);
-
     setImageBlob(selectedFile);
 
     const cidString = await encryptFileWithEOAAccess(
@@ -88,6 +75,7 @@ export function CreateItemLink() {
           Get link
         </button>
       )}
+
       {itemId && imageBlob && (
         <>
           <div>Your item is ready to be distributed!</div>

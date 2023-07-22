@@ -1,34 +1,24 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAccount } from 'wagmi'
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
-import { Account } from '../components/Account'
-import { NetworkSwitcher } from '../components/NetworkSwitcher'
-import { Request } from '../components/Request'
+import { Request } from "../components/Request";
 
 export function ItemPage({ id }: { id: string }) {
-  const { isConnected } = useAccount()
+  const { isConnected } = useAccount();
 
   return (
-    <>
-      <h1>Item {id}</h1>
-
-      <ConnectButton />
+    <div className="wrapper">
+      <div className="flex-space-between margin-bottom-big">
+        <a href="/">Back to homepage</a>
+        <ConnectButton />
+      </div>
 
       {isConnected && (
-        <>
-          <hr />
-          <h2>Network</h2>
-          <NetworkSwitcher />
-          <br />
-          <hr />
-          <h2>Account</h2>
-          <Account />
-          <br />
-          <hr />
-          <h2>Request</h2>
-          <Request itemId={id}/>
-        </>
+        <div className="nes-container with-title">
+          <span className="title">Request</span>
+          <Request itemId={id} />
+        </div>
       )}
-    </>
-  )
+    </div>
+  );
 }
