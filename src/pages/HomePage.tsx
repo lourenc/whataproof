@@ -3,8 +3,6 @@ import { useAccount } from 'wagmi'
 import 'nes.css/css/nes.min.css';
 import '../main.css';
 
-import { Account } from '../components/Account'
-import { NetworkSwitcher } from '../components/NetworkSwitcher'
 import { CreateItemLink } from '../components/CreateItemLink'
 import { Blame } from '../components/Blame'
 import { RequestsList } from '../components/RequestsList'
@@ -15,18 +13,13 @@ export function HomePage() {
 
   return (
     <div className="wrapper">
-      <h1>Home Page</h1>
-
-      <ConnectButton />
+      <div className="flex-space-between margin-bottom-big">
+        <h1>Whataproof</h1>
+        <ConnectButton />
+      </div>
 
       {isConnected && (
         <>
-          <h2>Network</h2>
-          <NetworkSwitcher />
-          <br />
-          <h2>Account</h2>
-          <Account />
-          <br />
           <div className="main-content-wrapper">
             <div className="main-content-col nes-container with-title">
               <span className="title">Distribute</span>

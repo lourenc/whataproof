@@ -32,6 +32,16 @@ html {
     gap: 8px;
 }
 
+.flex-space-between {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.margin-bottom-big {
+    margin-bottom: 36px;
+}
+
 .on-hover-blue:hover {
     color: #0E76FD;
 }
