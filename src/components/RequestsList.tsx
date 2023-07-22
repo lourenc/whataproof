@@ -1,7 +1,11 @@
-import { RequestStatus, Request } from "../models/Request";
 import "../main.css";
+
+import { RequestStatus, Request } from "../models/Request";
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
+import { decryptFileWithEOAAccess, encryptFileWithEOAAccess } from "../lit-sdk";
+import { useAccount, useNetwork } from "wagmi";
+import { useEthersSigner } from "../hooks/useEthersSigner";
 
 export function RequestsListItem(
   props: Request & { onApprove: () => void; onReject: () => void }
@@ -32,15 +36,52 @@ export function RequestsListItem(
 }
 
 export function RequestsList() {
+  const { address } = useAccount();
+  const { chain } = useNetwork();
+  const signer = useEthersSigner({ chainId: chain?.id });
+
   const [requests, setRequests] = useState<Request[]>([]);
 
   useEffect(() => {
     api.getRequests().then(setRequests);
   }, []);
 
-  const onApprove = (id: string) => {
-    api
-      .updateRequest(id, { status: RequestStatus.APPROVED, meta: "TODO" })
+  const onApprove = async (request: Request) => {
+    if (!chain || !address || !signer) {
+      return;
+    }
+
+    const { id, itemId } = request;
+    const item = await api.getItem(itemId);
+    const encryptedFileCid = item.meta;
+    const decryptedOriginalFile = await decryptFileWithEOAAccess(
+      chain.id,
+      signer.provider as any,
+      address.toLowerCase(),
+      encryptedFileCid
+    );
+
+    if (!decryptedOriginalFile) {
+      throw new Error("Failed to decrypt file from web3storage/LIT");
+    }
+
+    const encryptedFileCidWithACL = await encryptFileWithEOAAccess(
+      chain.id,
+      signer.provider as any,
+      address.toLowerCase(),
+      request.initiator.toLowerCase(),
+      decryptedOriginalFile
+    );
+
+    if (!encryptedFileCidWithACL) {
+      alert("Failed to encrypt file with ACL");
+    }
+
+    return api
+      .updateRequest(id, {
+        status: RequestStatus.APPROVED,
+        meta: encryptedFileCidWithACL,
+      })
       .then((request) => {
         setRequests((requests) =>
           requests.map((r) => (r.id === request.id ? request : r))
@@ -75,7 +116,7 @@ export function RequestsList() {
             <RequestsListItem
               key={request.id}
               onReject={() => onReject(request.id)}
-              onApprove={() => onApprove(request.id)}
+              onApprove={() => onApprove(request)}
               {...request}
             />
           ))}

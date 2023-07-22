@@ -143,6 +143,7 @@ export async function encryptToWeb3Storage({
     const dataToStore = JSON.stringify({
       encryptedFile: encryptedDataJson,
       encryptedSymmetricKeyString,
+      encryptedFileMimeType: file.type,
       accessControlConditions,
       evmContractConditions,
       solRpcConditions,
@@ -150,9 +151,11 @@ export async function encryptToWeb3Storage({
       chain,
     });
 
-    const file = new File([dataToStore], "details", { type: "text/plain" });
+    const fileToStore = new File([dataToStore], "details", {
+      type: "text/plain",
+    });
 
-    const cid = await web3StorageClient.put([file]);
+    const cid = await web3StorageClient.put([fileToStore]);
 
     return cid;
   } catch (e) {
@@ -198,9 +201,13 @@ export async function decryptFromWeb3Storage({
           type: "application/octet-stream",
         }
       );
-      return await LitJsSdk.decryptFile({
+      const decryptedFile = await LitJsSdk.decryptFile({
         file: encryptedFileBlob,
         symmetricKey,
+      });
+
+      return new Blob([decryptedFile], {
+        type: metadata.encryptedFileMimeType,
       });
     }
   }
