@@ -92,6 +92,29 @@ export function createACLForERC20(
   ];
 }
 
+const NEXT_ID_API_CALL_IPFS =
+  "ipfs://QmSbpQBU6QKN3gY7JdWZzZPXR91eaxLBUxuvLv5JNvo7s1";
+
+export function createACLForNestId(
+  platform: string,
+  identity: string,
+  chain: string
+) {
+  return [
+    {
+      contractAddress: NEXT_ID_API_CALL_IPFS,
+      standardContractType: "LitAction",
+      chain,
+      method: "validate",
+      parameters: [platform, identity, ":userAddress"],
+      returnValueTest: {
+        comparator: "=",
+        value: "true",
+      },
+    },
+  ];
+}
+
 export interface EncryptToWeb3StorageProps {
   authSig?: AuthSig;
   sessionSigs?: any;
