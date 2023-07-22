@@ -19,8 +19,10 @@ export function Blame() {
 
     axios.post("http://127.0.0.1:5000/check_image", formData)
     .then(response => {
-
-      console.log('key', response.data);
+      const key = response.data;
+      // \u0000\u0000\u0000\u0000 if no key found
+      const watermarkElement = document.getElementById("watermark") as HTMLElement;
+      watermarkElement.innerText = key;
     })
     .catch(error => {
       // Handle errors here
@@ -39,6 +41,9 @@ export function Blame() {
         <input onChange={onFileChange} type="file"></input>
         <br />
         <button onClick={onFileUpload}>Detect leaker</button>
+      </div>
+      <div>
+        Watermark: <p id="watermark"></p>
       </div>
       {leaker && (
         <>
