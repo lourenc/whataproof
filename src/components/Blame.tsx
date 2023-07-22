@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from 'axios';
 
 export function Blame() {
   const [selectedFile, setSelectedFile] = useState<any>(null);
@@ -14,11 +15,17 @@ export function Blame() {
     // Create an object of formData
     const formData = new FormData();
 
-    // Update the formData object
-    formData.append("myFile", selectedFile, selectedFile.name);
+    formData.append("image", selectedFile, selectedFile.name);
 
-    // Request made to the backend api
-    // Send formData object
+    axios.post("http://127.0.0.1:5000/check_image", formData)
+    .then(response => {
+
+      console.log('key', response.data);
+    })
+    .catch(error => {
+      // Handle errors here
+      console.error("Error:", error);
+    });
 
     // axios.post("api/uploadfile", formData);
     // TODO - call backend to upload file, get watermarked bytes, encrypt and load to filecoin
