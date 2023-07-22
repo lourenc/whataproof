@@ -1,0 +1,100 @@
+{
+  "$metadata": {
+    "uris": {
+      "jsonLdContext": "ipfs://QmezxuGBkV9Co7bsGvK6Q2qFbit2ZNjvzVV9oNTAZLtKqr"
+    },
+    "version": "1.0"
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Simple Birthday Credential Scheme",
+  "title": "Birthday Credential",
+  "required": [
+    "@context",
+    "id",
+    "type",
+    "issuanceDate",
+    "credentialSubject",
+    "credentialSchema",
+    "credentialStatus",
+    "issuer"
+  ],
+  "properties": {
+    "@context": {
+      "type": ["string", "array", "object"]
+    },
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": ["string", "array"],
+      "items": {
+        "type": "string"
+      }
+    },
+    "issuer": {
+      "type": ["string", "object"],
+      "format": "uri",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "issuanceDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expirationDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "credentialSchema": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uri"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "subjectPosition": {
+      "type": "string",
+      "enum": ["none", "index", "value"]
+    },
+    "merklizationRootPosition": {
+      "type": "string",
+      "enum": ["none", "index", "value"]
+    },
+    "revNonce": {
+      "type": "integer"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "updatable": {
+      "type": "boolean"
+    },
+    "credentialSubject": {
+      "type": "object",
+      "required": ["id", "birthday"],
+      "properties": {
+        "id": {
+          "title": "Credential Subject ID",
+          "type": "string",
+          "format": "uri"
+        },
+        "birthday": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+
+  "type": "object"
+}
