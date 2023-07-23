@@ -2,6 +2,9 @@
 
 Demo: [https://whataproof.xyz/](https://whataproof.xyz/)
 
+**Core idea:** Web3 content-sharing platform with access level management and leakage protection
+
+Features:
 - File encryption (Lit Protocol)
 - Filecoin / IPFS file storage (web3.storage)
 - File sharing (Lit Protocol)
