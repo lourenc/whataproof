@@ -10,10 +10,11 @@ import { watermarkApi } from "../api/watermark";
 
 import mimetypes from "mime-types";
 
+const shortenString = (text: string) => (text.length > 12)? text.slice(0, 6) + ".." + text.slice(-6) : text;
+
 export function RequestsListItem(
   props: Request & { onApprove: () => void; onReject: () => void }
 ) {
-  const shortenString = (text: string) => (text.length > 12)? text.slice(0, 6) + ".." + text.slice(-6) : text;
   const handleTdClick = (event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>, fullText: string) => {
     const td = event.target as HTMLTableCellElement;
     const currentText = td.innerText;
@@ -28,9 +29,6 @@ export function RequestsListItem(
   return (
     <tr>
       <td className="on-hover-blue" onClick={(e) => handleTdClick(e, id)}>{shortenString(id)}</td>
-      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, initinator)}>{shortenString(initinator)}</td>
-      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, distibutor)}>{shortenString(distibutor)}</td>
-      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, itemId)}>{shortenString(itemId)}</td>
       <td>
         {props.status === RequestStatus.PENDING ? (
           <div className="vertical-small-gap">
@@ -45,6 +43,9 @@ export function RequestsListItem(
           props.status
         )}
       </td>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, initinator)}>{shortenString(initinator)}</td>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, distibutor)}>{shortenString(distibutor)}</td>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, itemId)}>{shortenString(itemId)}</td>
     </tr>
   );
 }
@@ -136,10 +137,10 @@ export function RequestsList() {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Status</th>
             <th>Initiator</th>
             <th>Distributor</th>
             <th>ItemId</th>
-            <th>Status</th>
           </tr>
         </thead>
         {requests.length ? (

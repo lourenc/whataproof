@@ -57,7 +57,7 @@ function ApprovedRequest({ request }: { request: RequestModel }) {
       <div>Status: {request.status}</div>
 
       <h1>DO NOT LEAK! LEAKAGE IS TRACEBLE</h1>
-      {!imageBlob && <button onClick={decryptFileHandler}>Decrypt file</button>}
+      {!imageBlob && <button className="nes-btn" onClick={decryptFileHandler}>Decrypt file</button>}
       {imageBlob && <img src={URL.createObjectURL(imageBlob)} width={500} />}
     </div>
   );
@@ -67,7 +67,8 @@ function NoRequest({ onSubmit }: { itemId: string; onSubmit: () => void }) {
   return (
     <div>
       <div>Submit request to view the item</div>
-      <button onClick={onSubmit}>Request</button>
+      <br />
+      <button className="nes-btn" onClick={onSubmit}>Request</button>
     </div>
   );
 }

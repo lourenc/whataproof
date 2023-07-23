@@ -1,6 +1,7 @@
 body {
     overflow-x: hidden;
     position: relative;
+    word-wrap: break-word;
 }
 
 html {
@@ -36,10 +37,23 @@ html {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .margin-bottom-big {
     margin-bottom: 36px;
+}
+
+.margin-bottom-small {
+    margin-bottom: 8px;
+}
+
+.margin-top-medium {
+    margin-top: 16px;
+}
+
+.margin-top-small {
+    margin-top: 8px;
 }
 
 .on-hover-blue:hover {
