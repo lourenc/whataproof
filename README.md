@@ -9,8 +9,7 @@ Demo: [https://whataproof.xyz/](https://whataproof.xyz/)
 - And most importantly: invisible file watermarking using LSB Steganography
 
 # Components
-
-![Components](components.jpg)
+![image](https://github.com/lourenc/whataproof/assets/6189971/642b323e-6497-46b9-9a05-2b5814d56df3)
 
 # Boilerplate blabla
 
