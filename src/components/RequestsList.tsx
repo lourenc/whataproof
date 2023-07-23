@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { api } from "../api/api";
 import {
   createACLForAccount,
+  createACLForERC20,
   decryptFileWithEOAAccess,
   encryptFileWithCustomACL,
 } from "../lit-sdk";
@@ -14,11 +15,21 @@ import { watermarkApi } from "../api/watermark";
 
 import mimetypes from "mime-types";
 
+enum ACL {
+  ManualApprove = "MANUAL_APPROVE",
+  MoreThan3Apes = "MORE_THAN_3_APES",
+  // NftHolder = "NFT_HOLDER",
+}
+
 export function RequestsListItem(
-  props: Request & { onApprove: () => void; onReject: () => void }
+  props: Request & {
+    onApprove: (preferredAcl: ACL) => void;
+    onReject: () => void;
+  }
 ) {
   const shortenString = (text: string) =>
     text.length > 12 ? text.slice(0, 6) + ".." + text.slice(-6) : text;
+  const [selectedAcl, setSelectedAcl] = useState<ACL>(ACL.ManualApprove);
   const handleTdClick = (
     event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>,
     fullText: string
@@ -33,6 +44,7 @@ export function RequestsListItem(
     }
   };
   const { id, initiator: initinator, distributor: distibutor, itemId } = props;
+
   return (
     <tr>
       <td className="on-hover-blue" onClick={(e) => handleTdClick(e, id)}>
@@ -56,7 +68,22 @@ export function RequestsListItem(
       <td>
         {props.status === RequestStatus.PENDING ? (
           <div className="vertical-small-gap">
-            <button onClick={props.onApprove} className="nes-btn is-success">
+            <div className="nes-select">
+              <select
+                required
+                id="default_select"
+                value={selectedAcl}
+                onChange={(e) => setSelectedAcl(e.currentTarget.value as ACL)}
+              >
+                <option value={ACL.ManualApprove}>Default</option>
+                <option value={ACL.MoreThan3Apes}>At least 3 APEs</option>
+              </select>
+            </div>
+
+            <button
+              onClick={() => props.onApprove(selectedAcl)}
+              className="nes-btn is-success"
+            >
               Approve
             </button>
             <button onClick={props.onReject} className="nes-btn is-error">
@@ -71,6 +98,11 @@ export function RequestsListItem(
   );
 }
 
+const WagmiNetworkToLitNetwork: Record<number, string> = {
+  1: "ethereum",
+  314: "filecoin",
+};
+
 export function RequestsList() {
   const { address } = useAccount();
   const { chain } = useNetwork();
@@ -84,7 +116,7 @@ export function RequestsList() {
     api.getRequests(account.address).then(setRequests);
   }, [account.address]);
 
-  const onApprove = async (request: Request) => {
+  const onApprove = async (request: Request, preferedAcl: ACL) => {
     if (!chain || !address || !signer) {
       return;
     }
@@ -118,14 +150,34 @@ export function RequestsList() {
       type: watermarkedImageResponse.headers["content-type"],
     });
 
+    const acl = (() => {
+      const manualApprove = createACLForAccount(
+        request.initiator.toLowerCase(),
+        WagmiNetworkToLitNetwork[chain.id]! // yes, looks weird, but it is what it is
+      );
+
+      switch (preferedAcl) {
+        case ACL.MoreThan3Apes:
+          return [
+            manualApprove,
+            { operator: "and" },
+            createACLForERC20(
+              "0x4d224452801aced8b2f0aebe155379bb5d594381",
+              "3",
+              "ethereum"
+            ),
+          ].flat();
+        default:
+        case ACL.ManualApprove:
+          return manualApprove;
+      }
+    })();
+
     const encryptedFileCidWithACL = await encryptFileWithCustomACL(
       chain.id,
       signer.provider as any,
       address.toLowerCase(),
-      createACLForAccount(
-        request.initiator.toLowerCase(),
-        chain.nativeCurrency.name // yes, looks weird, but it is what it is
-      ),
+      acl as any,
       watermarkedImageBlob
     );
 
@@ -173,7 +225,7 @@ export function RequestsList() {
               <RequestsListItem
                 key={request.id}
                 onReject={() => onReject(request.id)}
-                onApprove={() => onApprove(request)}
+                onApprove={(preferedAcl) => onApprove(request, preferedAcl)}
                 {...request}
               />
             ))}
