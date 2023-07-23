@@ -260,11 +260,11 @@ export async function decryptFromWeb3Storage({
   }
 }
 
-export async function encryptFileWithEOAAccess(
+export async function encryptFileWithCustomACL(
   chainId: number,
   provider: providers.Web3Provider,
   account: string,
-  externalAccount: string,
+  accessControlConditions: AccessControlConditions,
   fileToEncrypt: AcceptedFileType
 ) {
   const litNodeClient = await waitForConnect();
@@ -274,7 +274,7 @@ export async function encryptFileWithEOAAccess(
     authSig,
     litNodeClient: litNodeClient as any,
     chain: "filecoin",
-    accessControlConditions: createACLForAccount(externalAccount, "filecoin"),
+    accessControlConditions,
     file: fileToEncrypt,
   });
 

@@ -3,7 +3,11 @@ import "../main.css";
 import { RequestStatus, Request } from "../models/Request";
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
-import { decryptFileWithEOAAccess, encryptFileWithEOAAccess } from "../lit-sdk";
+import {
+  createACLForAccount,
+  decryptFileWithEOAAccess,
+  encryptFileWithCustomACL,
+} from "../lit-sdk";
 import { useAccount, useNetwork } from "wagmi";
 import { useEthersSigner } from "../hooks/useEthersSigner";
 import { watermarkApi } from "../api/watermark";
@@ -13,8 +17,12 @@ import mimetypes from "mime-types";
 export function RequestsListItem(
   props: Request & { onApprove: () => void; onReject: () => void }
 ) {
-  const shortenString = (text: string) => (text.length > 12)? text.slice(0, 6) + ".." + text.slice(-6) : text;
-  const handleTdClick = (event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>, fullText: string) => {
+  const shortenString = (text: string) =>
+    text.length > 12 ? text.slice(0, 6) + ".." + text.slice(-6) : text;
+  const handleTdClick = (
+    event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>,
+    fullText: string
+  ) => {
     const td = event.target as HTMLTableCellElement;
     const currentText = td.innerText;
 
@@ -27,10 +35,24 @@ export function RequestsListItem(
   const { id, initiator: initinator, distributor: distibutor, itemId } = props;
   return (
     <tr>
-      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, id)}>{shortenString(id)}</td>
-      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, initinator)}>{shortenString(initinator)}</td>
-      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, distibutor)}>{shortenString(distibutor)}</td>
-      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, itemId)}>{shortenString(itemId)}</td>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, id)}>
+        {shortenString(id)}
+      </td>
+      <td
+        className="on-hover-blue"
+        onClick={(e) => handleTdClick(e, initinator)}
+      >
+        {shortenString(initinator)}
+      </td>
+      <td
+        className="on-hover-blue"
+        onClick={(e) => handleTdClick(e, distibutor)}
+      >
+        {shortenString(distibutor)}
+      </td>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, itemId)}>
+        {shortenString(itemId)}
+      </td>
       <td>
         {props.status === RequestStatus.PENDING ? (
           <div className="vertical-small-gap">
@@ -96,11 +118,14 @@ export function RequestsList() {
       type: watermarkedImageResponse.headers["content-type"],
     });
 
-    const encryptedFileCidWithACL = await encryptFileWithEOAAccess(
+    const encryptedFileCidWithACL = await encryptFileWithCustomACL(
       chain.id,
       signer.provider as any,
       address.toLowerCase(),
-      request.initiator.toLowerCase(),
+      createACLForAccount(
+        request.initiator.toLowerCase(),
+        chain.nativeCurrency.name // yes, looks weird, but it is what it is
+      ),
       watermarkedImageBlob
     );
 
