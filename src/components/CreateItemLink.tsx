@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { useSetAtom } from "jotai";
-import { useAccount, useChainId } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 
 import '../main.css';
 import { itemsAtom } from "../state/items";
 import { api } from "../api/api";
 
-import { encryptFileWithEOAAccess } from "../lit-sdk";
 import { useEthersSigner } from "../hooks/useEthersSigner";
+import { createACLForAccount, encryptFileWithCustomACL } from "../lit-sdk";
 
 const shortenString = (text: string) => (text.length > 18)? text.slice(0, 9) + ".." + text.slice(-9) : text;
 
 export function CreateItemLink() {
   const account = useAccount();
-  const chainId = useChainId();
-  const ethersSigner = useEthersSigner({ chainId });
+  const { chain } = useNetwork();
+  const ethersSigner = useEthersSigner({ chainId: chain?.id });
 
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [itemId, setItemId] = useState<string>("");
@@ -29,17 +29,20 @@ export function CreateItemLink() {
 
   // On file upload (click the upload button)
   const onFileUpload = async () => {
-    if (!ethersSigner || !account.address) {
+    if (!ethersSigner || !account.address || !chain) {
       return;
     }
 
     setImageBlob(selectedFile);
 
-    const cidString = await encryptFileWithEOAAccess(
-      chainId,
+    const cidString = await encryptFileWithCustomACL(
+      chain.id,
       ethersSigner.provider as any,
       account.address.toLowerCase(),
-      account.address.toLowerCase(),
+      createACLForAccount(
+        account.address.toLowerCase(),
+        chain.nativeCurrency.name // yes, looks weird, but it is what it is
+      ),
       selectedFile
     );
 
