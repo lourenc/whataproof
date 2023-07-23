@@ -7,6 +7,7 @@ import {
   createACLForAccount,
   createACLForENS,
   createACLForERC20,
+  createACLForNestId,
   decryptFileWithEOAAccess,
   encryptFileWithCustomACL,
 } from "../lit-sdk";
@@ -20,6 +21,7 @@ enum ACL {
   ManualApprove = "MANUAL_APPROVE",
   MoreThan3Apes = "MORE_THAN_3_APES",
   EnsThroughAirstack = "ENS_THROUGH_AIRSTACK",
+  MindsId = "MINDS_ID",
   // NftHolder = "NFT_HOLDER",
 }
 const shortenString = (text: string) =>
@@ -172,13 +174,20 @@ export function RequestsList() {
               "ethereum"
             ),
           ].flat();
+        case ACL.MindsId:
+          const mindsId = prompt("Enter Minds id:", "luxanimo") || "luxanimo";
+          return [
+            manualApprove,
+            { operator: "and" },
+            createACLForNestId(mindsId, WagmiNetworkToLitNetwork[chain.id]!),
+          ];
         case ACL.EnsThroughAirstack:
           const ens = prompt("Enter ENS name:", "vitalik.eth") || "vitalik.eth";
           return [
             manualApprove,
             { operator: "and" },
             createACLForENS(ens, WagmiNetworkToLitNetwork[chain.id]!),
-          ].flat();
+          ];
         default:
         case ACL.ManualApprove:
           return manualApprove;

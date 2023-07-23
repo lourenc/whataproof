@@ -96,9 +96,9 @@ const NEXT_ID_API_CALL_IPFS =
   "ipfs://QmSbpQBU6QKN3gY7JdWZzZPXR91eaxLBUxuvLv5JNvo7s1";
 
 export function createACLForNextId(
-  platform: string,
   identity: string,
-  chain: string
+  chain: string,
+  platform: string = "minds"
 ) {
   return [
     {
