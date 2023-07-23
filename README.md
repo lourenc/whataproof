@@ -8,6 +8,11 @@ Demo: [https://whataproof.xyz/](https://whataproof.xyz/)
 - Access level management (e.g. by owning APE, specific ENS names, or specific addresses)
 - And most importantly: invisible file watermarking using LSB Steganography
 
+# Full description:
+*whataproof* is a decentralized anonymous content distribution platform with copyright protection. Our project is perfect for selling financial research from research firms or sharing confidential information from commercial organizations. Our solution can also protect government information.
+
+The platform comes with built-in anti-piracy mechanisms. We create a unique watermark for each user, which we embed into the content using LSB steganography technology. Thus, if someone compromises the content and publishes it openly, the author can decode the recipient and remove them from the content consumer list for copyright infringement.
+
 # Components
 ![image](https://github.com/lourenc/whataproof/assets/6189971/642b323e-6497-46b9-9a05-2b5814d56df3)
 
