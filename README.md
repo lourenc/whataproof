@@ -9,7 +9,7 @@ Demo: [https://whataproof.xyz/](https://whataproof.xyz/)
 - Airstack is used as a Web3 entity resolver for access level management
 - And most importantly: invisible file watermarking using LSB Steganography
 
-# Full description:
+# Full description
 *whataproof* is a decentralized anonymous content distribution platform with copyright protection. Our project is perfect for selling financial research from research firms or sharing confidential information from commercial organizations. Our solution can also protect government information.
 
 The platform comes with built-in anti-piracy mechanisms. We create a unique watermark for each user, which we embed into the content using LSB steganography technology. Thus, if someone compromises the content and publishes it openly, the author can decode the recipient and remove them from the content consumer list for copyright infringement.
