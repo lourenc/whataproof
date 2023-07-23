@@ -55,7 +55,7 @@ export function Blame() {
       </div>
       {leaker && (
         <>
-          <div>Leaker is:</div>
+          <div className="margin-top-small">Leaker is:</div>
           <div>{leaker}</div>
         </>
       )}

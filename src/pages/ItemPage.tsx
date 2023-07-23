@@ -9,7 +9,7 @@ export function ItemPage({ id }: { id: string }) {
   return (
     <div className="wrapper">
       <div className="flex-space-between margin-bottom-big">
-        <a href="/">Back to homepage</a>
+        <a className="margin-bottom-small" href="/">&lt; Back to homepage</a>
         <ConnectButton />
       </div>
 

@@ -22,11 +22,11 @@ export function HomePage() {
         <>
           <div className="main-content-wrapper">
             <div className="main-content-col nes-container with-title">
-              <span className="title">Distribute</span>
+              <span className="title">Distribute🔗</span>
               <CreateItemLink />
             </div>
             <div className="main-content-col nes-container with-title is-dark">
-              <span className="title">Blame</span>
+              <span className="title">Blame🔥</span>
               <Blame />
             </div>
           </div>

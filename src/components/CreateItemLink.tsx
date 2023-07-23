@@ -2,11 +2,14 @@ import { useState } from "react";
 import { useSetAtom } from "jotai";
 import { useAccount, useNetwork } from "wagmi";
 
+import '../main.css';
 import { itemsAtom } from "../state/items";
 import { api } from "../api/api";
 
 import { useEthersSigner } from "../hooks/useEthersSigner";
 import { createACLForAccount, encryptFileWithCustomACL } from "../lit-sdk";
+
+const shortenString = (text: string) => (text.length > 18)? text.slice(0, 9) + ".." + text.slice(-9) : text;
 
 export function CreateItemLink() {
   const account = useAccount();
@@ -81,16 +84,16 @@ export function CreateItemLink() {
 
       {itemId && imageBlob && (
         <>
-          <div>Your item is ready to be distributed!</div>
-          <div>
-            Link: <a href={link}>{link}</a>
-          </div>
+          <div className="margin-top-medium">Your item is ready to be distributed!</div>
           <img
+            className="margin-top-small"
             id="watermarked-image"
-            width="100px"
-            height="100px"
+            width="150px"
             src={URL.createObjectURL(imageBlob)}
           />
+          <div className="margin-top-small">
+            Link: <a href={link}>{shortenString(link)}</a>
+          </div>
         </>
       )}
     </div>

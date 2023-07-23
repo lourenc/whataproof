@@ -114,6 +114,26 @@ export function createACLForNextId(
     },
   ];
 }
+
+const ENS_API_CALL_IPFS =
+  "ipfs://QmY4QNNgowqPy86LBBJNyJqyfk2SANfMiFDXu32y8aQyWp";
+
+export function createACLForENS(ens: string, chain: string) {
+  return [
+    {
+      contractAddress: ENS_API_CALL_IPFS,
+      standardContractType: "LitAction",
+      chain,
+      method: "validate",
+      parameters: [ens, ":userAddress"],
+      returnValueTest: {
+        comparator: "=",
+        value: "true",
+      },
+    },
+  ];
+}
+
 const ON_CHAIN_ACTIVITY_API_CALL_IPFS =
   "ipfs://QmNNYNmupPPuxFvNqETxNecWTpi9G3NGtvn6meVr86k8wR";
 

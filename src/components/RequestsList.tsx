@@ -20,6 +20,8 @@ enum ACL {
   MoreThan3Apes = "MORE_THAN_3_APES",
   // NftHolder = "NFT_HOLDER",
 }
+const shortenString = (text: string) =>
+  text.length > 12 ? text.slice(0, 6) + ".." + text.slice(-6) : text;
 
 export function RequestsListItem(
   props: Request & {
@@ -27,8 +29,6 @@ export function RequestsListItem(
     onReject: () => void;
   }
 ) {
-  const shortenString = (text: string) =>
-    text.length > 12 ? text.slice(0, 6) + ".." + text.slice(-6) : text;
   const [selectedAcl, setSelectedAcl] = useState<ACL>(ACL.ManualApprove);
   const handleTdClick = (
     event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>,
@@ -50,24 +50,9 @@ export function RequestsListItem(
       <td className="on-hover-blue" onClick={(e) => handleTdClick(e, id)}>
         {shortenString(id)}
       </td>
-      <td
-        className="on-hover-blue"
-        onClick={(e) => handleTdClick(e, initinator)}
-      >
-        {shortenString(initinator)}
-      </td>
-      <td
-        className="on-hover-blue"
-        onClick={(e) => handleTdClick(e, distibutor)}
-      >
-        {shortenString(distibutor)}
-      </td>
-      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, itemId)}>
-        {shortenString(itemId)}
-      </td>
       <td>
         {props.status === RequestStatus.PENDING ? (
-          <div className="vertical-small-gap">
+          <div className="vertical-small-gap" style={{ width: "300px" }}>
             <div className="nes-select">
               <select
                 required
@@ -93,6 +78,21 @@ export function RequestsListItem(
         ) : (
           props.status
         )}
+      </td>
+      <td
+        className="on-hover-blue"
+        onClick={(e) => handleTdClick(e, initinator)}
+      >
+        {shortenString(initinator)}
+      </td>
+      <td
+        className="on-hover-blue"
+        onClick={(e) => handleTdClick(e, distibutor)}
+      >
+        {shortenString(distibutor)}
+      </td>
+      <td className="on-hover-blue" onClick={(e) => handleTdClick(e, itemId)}>
+        {shortenString(itemId)}
       </td>
     </tr>
   );
@@ -213,10 +213,10 @@ export function RequestsList() {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Status</th>
             <th>Initiator</th>
             <th>Distributor</th>
             <th>ItemId</th>
-            <th>Status</th>
           </tr>
         </thead>
         {requests.length ? (
