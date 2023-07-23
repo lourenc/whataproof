@@ -10,4 +10,4 @@ COPY . ./
 RUN npm run build
 
 FROM nginx:1.25.1
-COPY --from=builder /app/dist/ /usr/share/nginx/html
+COPY --from=builder /app/dist/ /var/www/whataproof.xyz/html
