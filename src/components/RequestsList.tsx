@@ -69,6 +69,7 @@ export function RequestsListItem(
                 <option value={ACL.EnsThroughAirstack}>
                   ENS through Airstack
                 </option>
+                <option value={ACL.MindsId}>Minds ID</option>
               </select>
             </div>
 
