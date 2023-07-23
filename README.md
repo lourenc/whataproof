@@ -6,6 +6,7 @@ Demo: [https://whataproof.xyz/](https://whataproof.xyz/)
 - Filecoin / IPFS file storage (web3.storage)
 - File sharing (Lit Protocol)
 - Access level management (e.g. by owning APE, specific ENS names, or specific addresses)
+- Airstack is used as a Web3 entity resolver for access level management
 - And most importantly: invisible file watermarking using LSB Steganography
 
 # Full description:
