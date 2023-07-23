@@ -1,5 +1,19 @@
 # Whataproof
 
+Demo: [https://whataproof.xyz/](https://whataproof.xyz/)
+
+- File encryption (Lit Protocol)
+- Filecoin / IPFS file storage (web3.storage)
+- File sharing (Lit Protocol)
+- Access level management (e.g. by owning APE, specific ENS names, or specific addresses)
+- And most importantly: invisible file watermarking using LSB Steganography
+
+# Components
+
+![Components](components.jpg)
+
+# Boilerplate blabla
+
 This is a [wagmi](https://wagmi.sh) + [RainbowKit](https://rainbowkit.com) + [Vite](https://vitejs.dev/) project bootstrapped with [`create-wagmi`](https://github.com/wagmi-dev/wagmi/tree/main/packages/create-wagmi)
 
 # Getting Started
